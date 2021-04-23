@@ -1,4 +1,4 @@
 package com.example.surrow.surrow
 
-class Circle {
+data class Circle(var position: Point, val radius: Float) {
 }

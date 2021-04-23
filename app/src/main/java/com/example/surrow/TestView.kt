@@ -7,15 +7,17 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.view.View
 import com.example.surrow.surrow.Box
+import com.example.surrow.surrow.Circle
 import com.example.surrow.surrow.Point
 import com.example.surrow.surrow.Polygon
 
 class TestView( context: Context) : View(context) {
     private val paint = Paint().apply { isAntiAlias = true }
 
-    var a = Polygon(Point(100f,100f), listOf(Point(0f,0f), Point(100f,0f), Point(150f, 50f), Point(100f, 100f), Point(0f, 100f)), 0f)
-    var b = Polygon(Point(500f,100f), listOf(Point(0f,0f), Point(100f,0f), Point(150f, 50f), Point(100f, 100f), Point(0f, 100f)), 0f)
-
+    var a = Polygon(Point(50f,1000f), listOf(Point(0f,0f), Point(200f,0f), Point(300f, 100f), Point(200f, 200f), Point(0f, 200f)), 1.5708f)
+    var b = Polygon(Point(305f,100f), listOf(Point(0f,0f), Point(200f,0f), Point(300f, 100f), Point(200f, 200f), Point(0f, 200f)), 1.5708f)
+    var p = Point(100f,100f)
+    var c = Circle(Point(150f, 1000f), 200f)
     fun drawPoly(polygon: Polygon, canvas: Canvas, paint: Paint){
         canvas.save()
         canvas.translate(polygon.position.x,polygon.position.y)
@@ -32,14 +34,20 @@ class TestView( context: Context) : View(context) {
     override fun onDraw(canvas: Canvas) {
         canvas.drawColor(Color.LTGRAY)
         super.onDraw(canvas)
-        //a.angle += 20f * (Math.PI / 180f).toFloat()
-        b.position.x -= 15
-        drawPoly(a, canvas, paint)
-        drawPoly(b, canvas, paint)
+//        a.angle += 20f * (Math.PI / 180f).toFloat()
+        p.y += 40
+//        b.position.y += 15
 
-        var res = a.test(b)
-        //a.position -= res.toPoint()
-        res
+        val res = p.test(a)
+
+//        b.position -= res.toPoint()
+        canvas.drawRect(p.x-5,p.y-5,p.x+5,p.y+5, paint)
+//        canvas.drawCircle(c.position.x,c.position.y,c.radius,paint)
+        drawPoly(a, canvas, paint)
+//        drawPoly(b, canvas, paint)
+
+        var c = a.points
+        var d = a.edges
         invalidate()
     }
 }

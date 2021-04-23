@@ -56,7 +56,7 @@ class Polygon {
             originals.forEachIndexed { index, _ ->
                 val p1 = originals[index]
                 val p2 = if(index == originals.size - 1) originals[0] else originals[index+1]
-                val weight = (p1 - p2).length() + (p1 - p2).length()
+                val weight = p2.vector(p1).length() * 2
                 centerSum += p1 * weight
                 weightSum += weight
             }
@@ -89,7 +89,7 @@ class Polygon {
 
             return mutableListOf(min, max)
         }
-        fun isSeparatingAxis(aPos: Point, bPos: Point, aPoints: List<Point>, bPoints: List<Point>, axis: Point): Vector? {
+        fun isSeparatingAxis(aPos: Point, bPos: Point, aPoints: List<Point>, bPoints: List<Point>, axis: Point): Float? {
             val offsetV = aPos.vector(bPos)
             val projectedOffset = offsetV.dot(axis)
 
@@ -103,7 +103,7 @@ class Polygon {
                 return null
             }
 
-            var overlap = 0F
+            var overlap: Float
             if(rangeA[0] < rangeB[0]) {
                 overlap = if (rangeA[1] < rangeB[1]) {
                     rangeA[1] - rangeB[0]
@@ -123,32 +123,34 @@ class Polygon {
             }
 
             val p = axis * abs(overlap)
-            return Vector(p.x, p.y)
+            return overlap//Vector(p.x, p.y)
         }
 
-        var overlap = Vector(0f,0f)
+        var overlap = Vector(Float.MAX_VALUE,Float.MAX_VALUE)
         points.forEachIndexed { index, _ ->
-            val result = isSeparatingAxis(position, other.position, points, other.points, normals[index])
-            if(result == null){
+            val distance = isSeparatingAxis(position, other.position, points, other.points, normals[index])
+            if(distance == null){
                 return Vector(0f, 0f)
             } else {
-                if(result > overlap){
+                val result = (normals[index] * distance).toVector()
+                if(abs(distance) < overlap.length() ){
                     overlap = result
                 }
             }
-
+            index
         }
         other.points.forEachIndexed { index, _ ->
-            val result = isSeparatingAxis(position, other.position, points, other.points, other.normals[index])
-            if(result == null){
+            val distance = isSeparatingAxis(position, other.position, points, other.points, other.normals[index])
+            if(distance == null){
                 return Vector(0f, 0f)
             } else {
-                if(result > overlap){
+                val result = (normals[index] * distance).toVector()
+                if(abs(distance) < overlap.length() ){
                     overlap = result
                 }
             }
+            index
         }
-
         return overlap
     }
 
