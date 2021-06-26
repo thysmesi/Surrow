@@ -1,3 +1,26 @@
+class Point{
+    constructor(x, y){
+        this.x = x
+        this.y = y
+    }
+    rotated(center, degrees) {
+        let radians = (degrees * (Math.PI / 180))
+
+        let x = this.x
+        let y = this.y
+        
+        x -= center.x
+        y -= center.y
+
+        let tx = ((cos(radians) * x) + (sin(radians) * y) + center.x).toFloat()
+        y = ((cos(radians) * y) - (sin(radians) * x) + center.y).toFloat()
+        x = tx
+
+        return new Point(x, y)
+    }
+
+}
+
 class Line{
     constructor(p1, p2){
         this.p1 = p1
