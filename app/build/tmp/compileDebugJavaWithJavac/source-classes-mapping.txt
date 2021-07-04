@@ -1,0 +1,2 @@
+com/example/surrow/BuildConfig.java
+ com.example.surrow.BuildConfig
