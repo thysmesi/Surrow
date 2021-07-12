@@ -1,3 +1,23 @@
+class Angle {
+    constructor({radians, degrees} = {}){
+        this._degrees = 0
+        this._radians = 0
+        if(radians) this.radians = radians
+        else if (degrees) this.degrees = degrees
+        else this.radians = 0
+    }
+    set radians(value) {
+        this._radians = value
+        this._degrees = value * (180 / Math.PI)
+    }
+    set degrees(value) {
+        this._degrees = value
+        this._radians = value * (Math.PI / 180)
+    }
+    get radians(){return this._radians}
+    get degrees(){return this._degrees}
+}
+
 class Vector{
     constructor(x, y){
         if(y == undefined){
@@ -68,11 +88,11 @@ class Line{
     test(line) {
         let slope = this.slope()
         let yIntercept = this.yIntercept()
-        if(Math.abs(slope) == Infinity){
+        if(Math.abs(slope) == Infinity || isNaN(slope)){
             return new Point(this.p1.x, line.y(this.p1.x))
         }
-        if(Math.abs(line.slope) == Infinity){
-            return new Point(line.p1.x, y(line.p1.x))
+        if(Math.abs(line.slope()) == Infinity || isNaN(line.slope())){
+            return new Point(line.p1.x, this.y(line.p1.x))
         }
         if (slope == line.slope()) {
             return null
