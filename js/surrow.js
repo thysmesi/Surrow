@@ -1,8 +1,8 @@
 class Vector{
     constructor(x, y){
         if(y == undefined){
-            this.x = Math.cos((x - (Math.PI/2)))
-            this.y = Math.sin((x - (Math.PI/2)))
+            this.x = Math.cos(x)
+            this.y = Math.sin(x)
         } else {
             this.x = x
             this.y = y    
