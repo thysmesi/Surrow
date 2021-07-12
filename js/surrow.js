@@ -8,9 +8,9 @@ class Vector{
             this.y = y    
         }
     }
-    length(){return Math.abs(Math.sqrt(Math.pow(this.x,2) + Math.pow(this.y,2)))}
-    normal(){
-        let length = this.length()
+    get length(){return Math.abs(Math.sqrt(Math.pow(this.x,2) + Math.pow(this.y,2)))}
+    get normal(){
+        let length = this.length
         let v = new Vector(x, y)
         if(length > 0) {
             v /= length
