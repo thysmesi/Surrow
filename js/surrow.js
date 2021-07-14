@@ -29,6 +29,9 @@ class Vector{
         }
     }
     get length(){return Math.abs(Math.sqrt(Math.pow(this.x,2) + Math.pow(this.y,2)))}
+    get angle(){
+        return new Angle({radians:Math.atan2(this.y, this.x)})
+    }
     get normal(){
         let length = this.length
         let v = new Vector(x, y)
