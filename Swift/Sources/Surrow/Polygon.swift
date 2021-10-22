@@ -9,7 +9,7 @@ import Foundation
 
 public class Polygon: Collidable {
     // ----- Static ----- //
-    static func flattenPointsOn(points: [Point], normal: Vector) -> ClosedRange<Double> {
+    public static func flattenPointsOn(points: [Point], normal: Vector) -> ClosedRange<Double> {
         var min = Double.greatestFiniteMagnitude
         var max = -Double.greatestFiniteMagnitude
         for index in 0..<points.count {
@@ -21,39 +21,39 @@ public class Polygon: Collidable {
     }
     
     // ----- Independent ----- //
-    var relatives: [Point]
+    public var relatives: [Point]
     public var position: Point
     
     // ----- Dependent ----- //
-    var min: Point {
+    public var min: Point {
         var current = points[0]
         for point in points {
             current = Point(x: Swift.min(current.x, point.x), y: Swift.min(current.y, point.y))
         }
         return current
     }
-    var max: Point {
+    public var max: Point {
         var current = points[0]
         for point in points {
             current = Point(x: Swift.max(current.x, point.x), y: Swift.max(current.y, point.y))
         }
         return current
     }
-    var points: [Point] {
+    public var points: [Point] {
         var output: [Point] = []
         for point in relatives {
             output.append(point + position)
         }
         return output
     }
-    var normals: [Vector] {
+    public var normals: [Vector] {
         var output: [Vector] = []
         for index in 0..<edges.count {
             output.append(edges[index].perpendicular.normal)
         }
         return output
     }
-    var edges: [Vector] {
+    public var edges: [Vector] {
         var output: [Vector] = []
         for index in 0..<relatives.count {
             let p1 = relatives[index]
@@ -63,7 +63,7 @@ public class Polygon: Collidable {
         }
         return output
     }
-    var segments: [Segment] {
+    public var segments: [Segment] {
         var output: [Segment] = []
         for index in 0..<points.count {
             output.append(Segment(
@@ -79,7 +79,7 @@ public class Polygon: Collidable {
         return Box(position: Point(x: max.x - (width/2), y: max.y - (height / 2)), size: Size(width: width, height: height))
     }
     
-    var convex: Bool {
+    public var convex: Bool {
         // ----- Souce: https://stackoverflow.com/questions/471962/how-do-i-efficiently-determine-if-a-polygon-is-convex-non-convex-or-complex ----- //
         if normals.count < 4 {
             return true
@@ -109,17 +109,17 @@ public class Polygon: Collidable {
     
     
     // ----- Initializers ----- //
-    init(relatives: [Point], position: Point) {
+    public init(relatives: [Point], position: Point) {
         self.relatives = relatives
         self.position = position
     }
-    init(points: [Point]) {
+    public init(points: [Point]) {
         self.relatives = points
         self.position = Point.origin
     }
     
     // ----- Tests ----- //
-    func rotated(degrees: Double) -> Polygon {
+    public func rotated(degrees: Double) -> Polygon {
         Polygon(relatives: relatives.map {$0.rotated(around: Point.origin, degrees: degrees)}, position: position)
     }
     public func collides(with segment: Segment) -> Vector? {
@@ -246,10 +246,10 @@ public class Polygon: Collidable {
         Polygon * = Float
         Polygon / = Float
     */
-    static func *(lhs: Polygon, rhs: Double) -> Polygon {
+    public static func *(lhs: Polygon, rhs: Double) -> Polygon {
         Polygon(relatives: lhs.relatives.map {$0 * rhs} , position: lhs.position)
     }
-    static func *=(lhs: inout Polygon, rhs: Double) {
+    public static func *=(lhs: inout Polygon, rhs: Double) {
         lhs.relatives = lhs.relatives.map {$0 * rhs}
     }
     

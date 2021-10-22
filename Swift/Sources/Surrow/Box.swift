@@ -9,34 +9,34 @@ import Foundation
 
 public class Box: Collidable, CustomStringConvertible {
     // ----- Static ----- //
-    var unit: Box {
+    public var unit: Box {
         Box(x: 0, y: 0, width: 1, height: 1)
     }
     
     // ----- Independent ----- //
     public var position: Point
-    var size: Size
+    public var size: Size
     
     // ----- Dependent ----- //
-    var left: Double {
+    public var left: Double {
         position.x - (size.width / 2)
     }
-    var right: Double {
+    public var right: Double {
         position.x + (size.width / 2)
     }
-    var top: Double {
+    public var top: Double {
         position.y - (size.height / 2)
     }
-    var bottom: Double {
+    public var bottom: Double {
         position.y + (size.height / 2)
     }
         
     // ----- Initializers ----- //
-    init(position: Point, size: Size) {
+    public init(position: Point, size: Size) {
         self.position = position
         self.size = size
     }
-    init(x: Double, y: Double, width: Double, height: Double) {
+    public init(x: Double, y: Double, width: Double, height: Double) {
         self.position = Point(x:x, y: y)
         self.size = Size(width: width, height: height)
     }
@@ -110,7 +110,7 @@ public class Box: Collidable, CustomStringConvertible {
     }
     
     // ----- Conversions ----- //
-    var polygon: Polygon {
+    public var polygon: Polygon {
         Polygon(relatives: [Point(x: -(size.width / 2), y: -(size.height / 2)), Point(x: (size.width / 2), y: -(size.height / 2)), Point(x: (size.width / 2), y: (size.height / 2)), Point(x: -(size.width / 2), y: (size.height / 2))], position: position)
     }
     
@@ -119,7 +119,7 @@ public class Box: Collidable, CustomStringConvertible {
         Box *= Float
         Box / = Float
     */
-    static func *(lhs: Box, rhs: Double) -> Box {
+    public static func *(lhs: Box, rhs: Double) -> Box {
         Box(position: lhs.position, size: lhs.size * rhs)
     }
     

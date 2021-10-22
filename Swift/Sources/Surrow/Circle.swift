@@ -9,13 +9,13 @@ import Foundation
 
 public class Circle: Collidable {
     // ----- Static ----- //
-    static var unit: Circle {
+    public static var unit: Circle {
         Circle(position: Point.origin, radius: 1)
     }
     
     // ----- Independent ----- //
     public var position: Point
-    var radius: Double
+    public var radius: Double
     
     // ----- Dependent ----- //
     public var bounding: Box {
@@ -23,22 +23,22 @@ public class Circle: Collidable {
     }
     
     // ----- Initializers ----- //
-    init(position: Point, radius: Double) {
+    public init(position: Point, radius: Double) {
         self.position = position
         self.radius = radius
     }
     
     // ----- Operators ----- //
-    static func *(lhs: Circle, rhs: Double) -> Circle {
+    public static func *(lhs: Circle, rhs: Double) -> Circle {
         Circle(position: lhs.position, radius: lhs.radius * rhs)
     }
-    static func *=(lhs: inout Circle, rhs: Double) {
+    public static func *=(lhs: inout Circle, rhs: Double) {
         lhs.radius *= rhs
     }
-    static func /(lhs: Circle, rhs: Double) -> Circle {
+    public static func /(lhs: Circle, rhs: Double) -> Circle {
         Circle(position: lhs.position, radius: lhs.radius / rhs)
     }
-    static func /=(lhs: inout Circle, rhs: Double) {
+    public static func /=(lhs: inout Circle, rhs: Double) {
         lhs.radius /= rhs
     }
     
@@ -75,18 +75,6 @@ public class Circle: Collidable {
         return nil
     }
     public func collides(with polygon: Polygon) -> Vector? {
-        
-//        if position.within(polygon: polygon) {
-//            var closest: Vector? = nil
-//            for segment in polygon.segments {
-//                let vector = position.delta(to: segment)
-//                if closest == nil || vector.length < closest!.length {
-//                    closest = -vector
-//                }
-//            }
-//            return closest
-//        }
-        
         var vectors: [Vector] = []
         for segment in polygon.segments {
             if let vector = collides(with: segment) {

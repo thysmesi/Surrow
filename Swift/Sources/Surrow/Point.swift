@@ -9,28 +9,28 @@ import Foundation
 
 public class Point: Hashable, Decodable, CustomStringConvertible {
     // ----- Static ----- //
-    static var origin: Point {
+    public static var origin: Point {
         Point(x: 0, y: 0)
     }
     
     // ----- Independent ----- //
-    var x: Double
-    var y: Double
+    public var x: Double
+    public var y: Double
     
     // ----- Dependent ----- //
     
     // ----- Initializers ----- //
-    init(x: Double, y: Double) {
+    public init(x: Double, y: Double) {
         self.x = x
         self.y = y
     }
-    init(_ point: Point) {
+    public init(_ point: Point) {
         self.x = point.x
         self.y = point.y
     }
     
     // ----- Tests ----- //
-    func rotated(around other: Point = Point.origin, degrees: Double) -> Point {
+    public func rotated(around other: Point = Point.origin, degrees: Double) -> Point {
         let radians = degrees * (Double.pi/180)
         let s = sin(radians)
         let c = cos(radians)
@@ -45,35 +45,35 @@ public class Point: Hashable, Decodable, CustomStringConvertible {
         return point
     }
         
-    func cross(_ other: Point) -> Double {
+    public func cross(_ other: Point) -> Double {
         x * other.y - y * other.x
     }
-    func dot(_ other: Point) -> Double {
+    public func dot(_ other: Point) -> Double {
         x * other.x + y * other.y
     }
-    func cross(_ other: Vector) -> Double {
+    public func cross(_ other: Vector) -> Double {
         x * other.dy - y * other.dx
     }
-    func dot(_ other: Vector) -> Double {
+    public func dot(_ other: Vector) -> Double {
         x * other.dx + y * other.dy
     }
     
-    func closest(on line: Line) -> Point {
+    public func closest(on line: Line) -> Point {
         let perpendicular = Line(slope: line.perpendicular, point: self)
         return perpendicular.intercects(line: line)!
     }
-    func closest(on segment: Segment) -> Point {
+    public func closest(on segment: Segment) -> Point {
         let intercect = closest(on: segment.line)
         if intercect.within(box: segment.bounding) {
             return intercect
         }
         return distance(to: segment.p1) < distance(to: segment.p2) ? segment.p1 : segment.p2
     }
-    func closest(on polygon: Polygon) -> Point {
+    public func closest(on polygon: Polygon) -> Point {
         let points = polygon.segments.map {closest(on: $0)}
         return points.sorted { distance(to: $0) < distance(to: $1)}[0]
     }
-    func closest(on box: Box) -> Point {
+    public func closest(on box: Box) -> Point {
         let closest = Point.origin
         if x >= box.right {closest.x = box.right}
         else if x <= box.left {closest.x = box.left}
@@ -84,11 +84,11 @@ public class Point: Hashable, Decodable, CustomStringConvertible {
         else if y >= box.top && y <= box.bottom {closest.x = x}
         return closest
     }
-    func closest(on circle: Circle) -> Point {
+    public func closest(on circle: Circle) -> Point {
         circle.position + (circle.position.delta(to: self).normal * circle.radius)
     }
 
-    func within(_ collidable: Collidable) -> Bool {
+    public func within(_ collidable: Collidable) -> Bool {
         switch collidable {
         case is Box: return within(box: collidable as! Box)
         case is Circle: return within(circle: collidable as! Circle)
@@ -96,58 +96,58 @@ public class Point: Hashable, Decodable, CustomStringConvertible {
         default: return false
         }
     }
-    func within(box: Box) -> Bool {
+    public func within(box: Box) -> Bool {
 //        x >= floor(1000.0 * box.left) / 1000.0 && x <= ceil(1000.0 * box.right) / 1000.0 && y >= floor(1000.0 * box.top) / 1000.0 && y <= ceil(1000.0 * box.bottom) / 1000.0
         x >= box.left && x <= box.right && y >= box.top && y <= box.bottom
     }
-    func within(polygon: Polygon) -> Bool {
+    public func within(polygon: Polygon) -> Bool {
         let test = Segment(p1: self, p2: Point(x: 65_535, y: y))
         return test.intercects(polygon: polygon).count % 2 == 1
     }
-    func within(circle: Circle) -> Bool {
+    public func within(circle: Circle) -> Bool {
         distance(to: circle.position) <= circle.radius
     }
     
-    func distance(to point: Point) -> Double {
+    public func distance(to point: Point) -> Double {
         sqrt(pow(point.x-x, 2) + pow(point.y-y,2))
     }
-    func distance(to line: Line) -> Double {
+    public func distance(to line: Line) -> Double {
         distance(to: closest(on: line))
     }
-    func distance(to segment: Segment) -> Double {
+    public func distance(to segment: Segment) -> Double {
         distance(to: closest(on: segment))
     }
-    func distance(to polygon: Polygon) -> Double {
+    public func distance(to polygon: Polygon) -> Double {
         distance(to: closest(on: polygon))
     }
-    func distance(to box: Box) -> Double {
+    public func distance(to box: Box) -> Double {
         distance(to: closest(on: box))
     }
-    func distance(to circle: Circle) -> Double {
+    public func distance(to circle: Circle) -> Double {
         distance(to: closest(on: circle))
     }
     
-    func delta(to other: Point) -> Vector {
+    public func delta(to other: Point) -> Vector {
         Vector(dx: other.x - x, dy: other.y - y)
     }
-    func delta(to line: Line) -> Vector {
+    public func delta(to line: Line) -> Vector {
         delta(to: closest(on: line))
     }
-    func delta(to segment: Segment) -> Vector {
+    public func delta(to segment: Segment) -> Vector {
         delta(to: closest(on: segment))
     }
-    func delta(to polygon: Polygon) -> Vector {
+    public func delta(to polygon: Polygon) -> Vector {
         delta(to: closest(on: polygon))
     }
-    func delta(to box: Box) -> Vector {
+    public func delta(to box: Box) -> Vector {
         delta(to: closest(on: box))
     }
-    func delta(to circle: Circle) -> Vector {
+    public func delta(to circle: Circle) -> Vector {
         delta(to: closest(on: circle))
     }
     
     // ----- Conversions ----- //
-    var vector: Vector {
+    public var vector: Vector {
         Vector(dx: x, dy: y)
     }
     
@@ -160,92 +160,92 @@ public class Point: Hashable, Decodable, CustomStringConvertible {
         Point / = Vector
         Point / = Float
      */
-    static func +(lhs: Point, rhs: Point) -> Point {
+    public static func +(lhs: Point, rhs: Point) -> Point {
         Point(x: lhs.x+rhs.x, y: lhs.y+rhs.y)
     }
-    static func +=(lhs: inout Point, rhs: Point) {
+    public static func +=(lhs: inout Point, rhs: Point) {
         lhs.x += rhs.x
         lhs.y += rhs.y
     }
-    static func +(lhs: Point, rhs: Vector) -> Point {
+    public static func +(lhs: Point, rhs: Vector) -> Point {
         Point(x: lhs.x+rhs.dx, y: lhs.y+rhs.dy)
     }
-    static func +=(lhs: inout Point, rhs: Vector) {
+    public static func +=(lhs: inout Point, rhs: Vector) {
         lhs.x += rhs.dx
         lhs.y += rhs.dy
     }
-    static func +(lhs: Point, rhs: Double) -> Point {
+    public static func +(lhs: Point, rhs: Double) -> Point {
         Point(x: lhs.x+rhs, y: lhs.y+rhs)
     }
-    static func +=(lhs: inout Point, rhs: Double) {
+    public static func +=(lhs: inout Point, rhs: Double) {
         lhs.x += rhs
         lhs.y += rhs
     }
-    static func -(lhs: Point, rhs: Point) -> Point {
+    public static func -(lhs: Point, rhs: Point) -> Point {
         Point(x: lhs.x-rhs.x, y: lhs.y-rhs.y)
     }
-    static func -=(lhs: inout Point, rhs: Point) {
+    public static func -=(lhs: inout Point, rhs: Point) {
         lhs.x -= rhs.x
         lhs.y -= rhs.y
     }
-    static func -(lhs: Point, rhs: Vector) -> Point {
+    public static func -(lhs: Point, rhs: Vector) -> Point {
         Point(x: lhs.x-rhs.dx, y: lhs.y-rhs.dy)
     }
-    static func -=(lhs: inout Point, rhs: Vector) {
+    public static func -=(lhs: inout Point, rhs: Vector) {
         lhs.x -= rhs.dx
         lhs.y -= rhs.dy
     }
-    static func -(lhs: Point, rhs: Double) -> Point {
+    public static func -(lhs: Point, rhs: Double) -> Point {
         Point(x: lhs.x-rhs, y: lhs.y-rhs)
     }
-    static func -=(lhs: inout Point, rhs: Double) {
+    public static func -=(lhs: inout Point, rhs: Double) {
         lhs.x -= rhs
         lhs.y -= rhs
     }
-    static func *(lhs: Point, rhs: Point) -> Point {
+    public static func *(lhs: Point, rhs: Point) -> Point {
         Point(x: lhs.x*rhs.x, y: lhs.y*rhs.y)
     }
-    static func *=(lhs: inout Point, rhs: Point) {
+    public static func *=(lhs: inout Point, rhs: Point) {
         lhs.x *= rhs.x
         lhs.y *= rhs.y
     }
-    static func *(lhs: Point, rhs: Vector) -> Point {
+    public static func *(lhs: Point, rhs: Vector) -> Point {
         Point(x: lhs.x*rhs.dx, y: lhs.y*rhs.dy)
     }
-    static func *=(lhs: inout Point, rhs: Vector) {
+    public static func *=(lhs: inout Point, rhs: Vector) {
         lhs.x *= rhs.dx
         lhs.y *= rhs.dy
     }
-    static func *(lhs: Point, rhs: Double) -> Point {
+    public static func *(lhs: Point, rhs: Double) -> Point {
         Point(x: lhs.x*rhs, y: lhs.y*rhs)
     }
-    static func *=(lhs: inout Point, rhs: Double) {
+    public static func *=(lhs: inout Point, rhs: Double) {
         lhs.x *= rhs
         lhs.y *= rhs
     }
-    static func /(lhs: Point, rhs: Point) -> Point {
+    public static func /(lhs: Point, rhs: Point) -> Point {
         Point(x: lhs.x/rhs.x, y: lhs.y/rhs.y)
     }
-    static func /=(lhs: inout Point, rhs: Point) {
+    public static func /=(lhs: inout Point, rhs: Point) {
         lhs.x /= rhs.x
         lhs.y /= rhs.y
     }
-    static func /(lhs: Point, rhs: Vector) -> Point {
+    public static func /(lhs: Point, rhs: Vector) -> Point {
         Point(x: lhs.x/rhs.dx, y: lhs.y/rhs.dy)
     }
-    static func /=(lhs: inout Point, rhs: Vector) {
+    public static func /=(lhs: inout Point, rhs: Vector) {
         lhs.x /= rhs.dx
         lhs.y /= rhs.dy
     }
-    static func /(lhs: Point, rhs: Double) -> Point {
+    public static func /(lhs: Point, rhs: Double) -> Point {
         Point(x: lhs.x/rhs, y: lhs.y/rhs)
     }
-    static func /=(lhs: inout Point, rhs: Double) {
+    public static func /=(lhs: inout Point, rhs: Double) {
         lhs.x /= rhs
         lhs.y /= rhs
     }
 
-    static prefix func -(point: Point) -> Point {
+    public static prefix func -(point: Point) -> Point {
         Point(x: -point.x, y: -point.y)
     }
     

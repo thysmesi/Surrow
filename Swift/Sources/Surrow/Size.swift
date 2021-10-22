@@ -9,24 +9,24 @@ import Foundation
 
 public class Size {
     // ----- Static ----- //
-    static var zero: Size {
+    public static var zero: Size {
         Size(width: 0, height: 0)
     }
     
     // ----- Independent ----- //
-    var width: Double
-    var height: Double
+    public var width: Double
+    public var height: Double
     
     // ----- Dependent ----- //
-    var hWidth: Double {
+    public var hWidth: Double {
         width / 2
     }
-    var hHeight: Double {
+    public var hHeight: Double {
         height / 2
     }
     
     // ----- Initializers ----- //
-    init(width: Double, height: Double) {
+    public init(width: Double, height: Double) {
         self.width = width
         self.height = height
     }
@@ -40,7 +40,7 @@ public class Size {
         size * = Float
         size / = Float
     */
-    static func *(lhs: Size, rhs: Double) -> Size {
+    public static func *(lhs: Size, rhs: Double) -> Size {
         Size(width: lhs.width * rhs, height: lhs.height * rhs)
     }
     

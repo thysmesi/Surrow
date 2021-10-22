@@ -12,46 +12,46 @@ public class Line {
     // ----- Static ----- //
     
     // ----- Independent ----- //
-    var p1: Point
-    var p2: Point
+    public var p1: Point
+    public var p2: Point
     
     // ----- Dependent ----- //
-    var slope: Double {
+    public var slope: Double {
         (p2.y - p1.y) / (p2.x - p1.x)
     }
-    var perpendicular: Double {
+    public var perpendicular: Double {
         1 / -slope
     }
-    var yIntercept: Double {
+    public var yIntercept: Double {
         y(0)
     }
-    var xIntercept: Double {
+    public var xIntercept: Double {
         x(0)
     }
     
     // ----- Initializers ----- //
-    init(p1: Point, p2: Point) {
+    public init(p1: Point, p2: Point) {
         self.p1 = p1
         self.p2 = p2
     }
-    init(slope: Double, point: Point) {
+    public init(slope: Double, point: Point) {
         self.p1 = point
         self.p2 = Point(x: point.x + 1, y: point.y + slope)
     }
-    init(slope: Double, yIntercept: Double) {
+    public init(slope: Double, yIntercept: Double) {
         self.p1 = Point(x: 0, y: yIntercept)
         self.p2 = Point(x: 1, y: slope + yIntercept)
     }
     
     // ----- Tests ----- //
-    func y(_ x: Double) -> Double {
+    public func y(_ x: Double) -> Double {
         (slope*x) - (slope*p1.x) + p1.y
     }
-    func x(_ y: Double) -> Double {
+    public func x(_ y: Double) -> Double {
         (y/slope) - (p1.y/slope) + p1.x
     }
 
-    func intercects(segment: Segment) -> Point?{
+    public func intercects(segment: Segment) -> Point?{
         let intercect = intercects(line: segment.line)
         if let intercect = intercect {
             if intercect.within(box: segment.bounding) {
@@ -60,7 +60,7 @@ public class Line {
         }
         return nil
     }
-    func intercects(line other: Line) -> Point?{
+    public func intercects(line other: Line) -> Point?{
         
         if slope == other.slope {
             return nil
@@ -78,7 +78,7 @@ public class Line {
         
         return Point(x: x, y: y)
     }
-    func intercects(polygon: Polygon) -> [Point] {
+    public func intercects(polygon: Polygon) -> [Point] {
         var intercections: [Point] = []
         for segment in polygon.segments {
             if let intercect = intercects(segment: segment) {
@@ -87,10 +87,10 @@ public class Line {
         }
         return intercections
     }
-    func intercects(box: Box) -> [Point] {
+    public func intercects(box: Box) -> [Point] {
         intercects(polygon: box.polygon)
     }
-    func intercects(circle: Circle) -> [Point] {
+    public func intercects(circle: Circle) -> [Point] {
         let aprim = (1 + pow(slope,2))
         let bprim = 2 * slope * (yIntercept - circle.position.y) - 2 * circle.position.x
         let cprim = pow(circle.position.x,2) + pow((yIntercept - circle.position.y),2) - pow(circle.radius, 2)
