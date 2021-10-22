@@ -28,7 +28,7 @@ let package = Package(
             path: "Swift/Sources/Surrow"),
         .target(
             name: "Collidable",
-            dependencies: [],
+            dependencies: ["Box","Circle","Line","Point","Polygon","Segment","Size","Vector"],
             path: "Swift/Sources/Surrow"),
         .target(
             name: "Line",
