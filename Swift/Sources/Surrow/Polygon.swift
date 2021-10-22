@@ -66,6 +66,13 @@ public class Polygon {
         let height = max.y - min.y
         return Box(position: Point(x: max.x - (width/2), y: max.y - (height / 2)), size: Size(width: width, height: height))
     }
+    public var middle: Point {
+        var sum = Point.origin
+        for point in points {
+            sum += point
+        }
+        return sum / Double(points.count)
+    }
     
     public var convex: Bool {
         // ----- Souce: https://stackoverflow.com/questions/471962/how-do-i-efficiently-determine-if-a-polygon-is-convex-non-convex-or-complex ----- //
