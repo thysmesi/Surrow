@@ -273,7 +273,6 @@ public class Point: Hashable, Decodable, CustomStringConvertible {
 
     /* ----- TODO -----
         Codable
-        Hashable
         Equatable
     */
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Size {
+public class Size: Hashable, Decodable, CustomStringConvertible {
     // ----- Static ----- //
     public static var zero: Size {
         Size(width: 0, height: 0)
@@ -47,8 +47,25 @@ public class Size {
     // ----- Conformance ----- //
     /* ----- TODO -----
         Codable
-        Hashable
         Equatable
-        CustomStringConvertible
     */
+    public var description: String {
+        "(width: \(width),   height: \(height))"
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case width
+        case height
+    }
+    required public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.width = try container.decode(Double.self, forKey: .width)
+        self.height = try container.decode(Double.self, forKey: .height)
+    }
+    public static func == (lhs: Size, rhs: Size) -> Bool {
+        lhs.width == rhs.width && lhs.height == rhs.height
+    }
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine("w\(width)h\(height)")
+    }
 }
