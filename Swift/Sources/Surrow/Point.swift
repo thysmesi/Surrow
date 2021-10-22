@@ -97,8 +97,8 @@ public class Point: Hashable, Decodable, CustomStringConvertible {
         }
     }
     public func within(box: Box) -> Bool {
-//        x >= floor(1000.0 * box.left) / 1000.0 && x <= ceil(1000.0 * box.right) / 1000.0 && y >= floor(1000.0 * box.top) / 1000.0 && y <= ceil(1000.0 * box.bottom) / 1000.0
-        x >= box.left && x <= box.right && y >= box.top && y <= box.bottom
+        x >= floor(1000.0 * box.left) / 1000.0 && x <= ceil(1000.0 * box.right) / 1000.0 && y >= floor(1000.0 * box.top) / 1000.0 && y <= ceil(1000.0 * box.bottom) / 1000.0
+//        x >= box.left && x <= box.right && y >= box.top && y <= box.bottom
     }
     public func within(polygon: Polygon) -> Bool {
         let test = Segment(p1: self, p2: Point(x: 65_535, y: y))
