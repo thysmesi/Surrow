@@ -19,13 +19,41 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
-            name: "Surrow",
+            name: "Box",
             dependencies: [],
             path: "Swift/Sources/Surrow"),
-        .testTarget(
-            name: "SurrowTests",
-            dependencies: ["Surrow"],
-            path: "Swift/Tests/SurrowTests"
-            ),
+        .target(
+            name: "Circle",
+            dependencies: [],
+            path: "Swift/Sources/Surrow"),
+        .target(
+            name: "Collidable",
+            dependencies: [],
+            path: "Swift/Sources/Surrow"),
+        .target(
+            name: "Line",
+            dependencies: [],
+            path: "Swift/Sources/Surrow"),
+        .target(
+            name: "Point",
+            dependencies: [],
+            path: "Swift/Sources/Surrow"),
+        .target(
+            name: "Polygon",
+            dependencies: [],
+            path: "Swift/Sources/Surrow"),
+        .target(
+            name: "Segment",
+            dependencies: [],
+            path: "Swift/Sources/Surrow"),
+        .target(
+            name: "Size",
+            dependencies: [],
+            path: "Swift/Sources/Surrow"),
+        .target(
+            name: "Vector",
+            dependencies: [],
+            path: "Swift/Sources/Surrow")
+        
     ]
 )
