@@ -97,10 +97,10 @@ public class Point: Hashable, Decodable, CustomStringConvertible {
         }
     }
     public func within(box: Box) -> Bool {
-        x >= box.left && x <= box.right && y >= box.top && y <= box.bottom
+        x >= floor(100000.0 * box.left) / 100000.0 && x <= ceil(100000.0 * box.right) / 100000.0 && y >= floor(100000.0 * box.top) / 100000.0 && y <= ceil(100000.0 * box.bottom) / 100000.0
     }
     public func within(polygon: Polygon) -> Bool {
-        let test = Segment(p1: self, p2: Point(x: 65_535, y: y))
+        let test = Segment(p1: self, p2: Point(x: 10000, y: y))
         return test.intercects(polygon: polygon).count % 2 == 1
     }
     public func within(circle: Circle) -> Bool {
