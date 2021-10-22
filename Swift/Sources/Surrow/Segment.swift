@@ -85,7 +85,7 @@ public class Segment: Line, Decodable {
         case p1
         case p2
     }
-    required init(from decoder: Decoder) throws {
+    required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         super.init(p1: try container.decode(Point.self, forKey: .p1), p2: try container.decode(Point.self, forKey: .p2))
     }

@@ -14,11 +14,11 @@ public class Circle: Collidable {
     }
     
     // ----- Independent ----- //
-    var position: Point
+    public var position: Point
     var radius: Double
     
     // ----- Dependent ----- //
-    var bounding: Box {
+    public var bounding: Box {
         Box(position: position, size: Size(width: radius*2, height: radius*2))
     }
     
@@ -43,7 +43,7 @@ public class Circle: Collidable {
     }
     
     // ----- Conformance ----- //
-    func collides(with collidable: Collidable) -> Vector? {
+    public func collides(with collidable: Collidable) -> Vector? {
         switch collidable {
         case is Box: return collides(with: collidable as! Box)
         case is Circle: return collides(with: collidable as! Circle)
@@ -51,7 +51,7 @@ public class Circle: Collidable {
         default: return nil
         }
     }
-    func collides(with segment: Segment) -> Vector? {
+    public func collides(with segment: Segment) -> Vector? {
         let closest = position.closest(on: segment)
         
         let vector = position.delta(to: closest)
@@ -62,19 +62,19 @@ public class Circle: Collidable {
         }
         return nil
     }
-    func collides(with box: Box) -> Vector? {
+    public func collides(with box: Box) -> Vector? {
         let vector = box.collides(with: self)
         return vector == nil ? nil : -vector!
     }
     
-    func collides(with circle: Circle) -> Vector? {
+    public func collides(with circle: Circle) -> Vector? {
         let delta = circle.position.delta(to: position)
         if delta.length <= circle.radius + radius {
             return delta.normal * (circle.radius + radius - delta.length)
         }
         return nil
     }
-    func collides(with polygon: Polygon) -> Vector? {
+    public func collides(with polygon: Polygon) -> Vector? {
         
 //        if position.within(polygon: polygon) {
 //            var closest: Vector? = nil

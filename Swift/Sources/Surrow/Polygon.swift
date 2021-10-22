@@ -22,7 +22,7 @@ public class Polygon: Collidable {
     
     // ----- Independent ----- //
     var relatives: [Point]
-    var position: Point
+    public var position: Point
     
     // ----- Dependent ----- //
     var min: Point {
@@ -73,7 +73,7 @@ public class Polygon: Collidable {
         }
         return output
     }
-    var bounding: Box {
+    public var bounding: Box {
         let width = max.x - min.x
         let height = max.y - min.y
         return Box(position: Point(x: max.x - (width/2), y: max.y - (height / 2)), size: Size(width: width, height: height))
@@ -122,7 +122,7 @@ public class Polygon: Collidable {
     func rotated(degrees: Double) -> Polygon {
         Polygon(relatives: relatives.map {$0.rotated(around: Point.origin, degrees: degrees)}, position: position)
     }
-    func collides(with segment: Segment) -> Vector? {
+    public func collides(with segment: Segment) -> Vector? {
         var greater: [Vector] = []
         var lesser: [Vector] = []
         
@@ -159,7 +159,7 @@ public class Polygon: Collidable {
         
         return largest
     }
-    func collides(with collidable: Collidable) -> Vector? {
+    public func collides(with collidable: Collidable) -> Vector? {
         switch collidable {
         case is Box: return collides(with: collidable as! Box)
         case is Circle: return collides(with: collidable as! Circle)
@@ -167,16 +167,16 @@ public class Polygon: Collidable {
         default: return nil
         }
     }
-    func collides(with box: Box) -> Vector? {
+    public func collides(with box: Box) -> Vector? {
         return collides(with: box.polygon)
     }
 
-    func collides(with circle: Circle) -> Vector? {
+    public func collides(with circle: Circle) -> Vector? {
         let vector = circle.collides(with: self)
         return vector == nil ? nil : -vector!
     }
 
-    func collides(with polygon: Polygon) -> Vector? {
+    public func collides(with polygon: Polygon) -> Vector? {
         if convex && polygon.convex && false {
 
         } else {

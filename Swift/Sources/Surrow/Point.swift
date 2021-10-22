@@ -250,7 +250,7 @@ public class Point: Hashable, Decodable, CustomStringConvertible {
     }
     
     // ----- Conformance ----- //
-    var description: String {
+    public var description: String {
         "(x: \(x),   y: \(y))"
     }
     
@@ -258,15 +258,15 @@ public class Point: Hashable, Decodable, CustomStringConvertible {
         case x
         case y
     }
-    required init(from decoder: Decoder) throws {
+    required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.x = try container.decode(Double.self, forKey: .x)
         self.y = try container.decode(Double.self, forKey: .y)
     }
-    static func == (lhs: Point, rhs: Point) -> Bool {
+    public static func == (lhs: Point, rhs: Point) -> Bool {
         lhs.x == rhs.x && lhs.y == rhs.y
     }
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine("x\(x)y\(y)")
     }
 

@@ -168,7 +168,7 @@ public class Vector: CustomStringConvertible {
 
     // ----- Conformance ----- //
     
-    var description: String {
+    public var description: String {
         "(dx: \(dx),   dy: \(dy))"
     }
     

@@ -14,7 +14,7 @@ public class Box: Collidable, CustomStringConvertible {
     }
     
     // ----- Independent ----- //
-    var position: Point
+    public var position: Point
     var size: Size
     
     // ----- Dependent ----- //
@@ -42,7 +42,7 @@ public class Box: Collidable, CustomStringConvertible {
     }
     
     // ----- Tests ----- //
-    func collides(with collidable: Collidable) -> Vector? {
+    public func collides(with collidable: Collidable) -> Vector? {
         switch collidable {
         case is Box: return collides(with: collidable as! Box)
         case is Circle: return collides(with: collidable as! Circle)
@@ -50,10 +50,10 @@ public class Box: Collidable, CustomStringConvertible {
         default: return nil
         }
     }
-    func collides(with segment: Segment) -> Vector? {
+    public func collides(with segment: Segment) -> Vector? {
         return nil
     }
-    func collides(with box: Box) -> Vector? {
+    public func collides(with box: Box) -> Vector? {
         let vX = right - box.right
         let vY = bottom - box.bottom
         let hWidths = (size.width/2) + (box.size.width / 2)
@@ -80,7 +80,7 @@ public class Box: Collidable, CustomStringConvertible {
         
         return vector
     }
-    func collides(with circle: Circle) -> Vector? {
+    public func collides(with circle: Circle) -> Vector? {
         // ----- source: https://stackoverflow.com/questions/401847/circle-rectangle-collision-detection-intersection
         
         let delta = circle.position.delta(to: position)
@@ -105,7 +105,7 @@ public class Box: Collidable, CustomStringConvertible {
         
         return pointVector.length < linearVector.length ? pointVector : linearVector
     }
-    func collides(with polygon: Polygon) -> Vector? {
+    public func collides(with polygon: Polygon) -> Vector? {
         self.polygon.collides(with: polygon)
     }
     
@@ -124,7 +124,7 @@ public class Box: Collidable, CustomStringConvertible {
     }
     
     // ----- Conformance ----- //
-    var description: String {
+    public var description: String {
         "x: \(position.x), y: \(position.y), width: \(size.width), height: \(size.height)"
     }
     
@@ -134,5 +134,5 @@ public class Box: Collidable, CustomStringConvertible {
         Equatable
         CustomStringConvertible    
     */
-    var bounding: Box { self }
+    public var bounding: Box { self }
 }
