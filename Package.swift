@@ -52,8 +52,8 @@ let package = Package(
             path: "Swift/Sources/Surrow"),
         .target(
             name: "Vector",
-            dependencies: [],
-            path: "Swift/Sources/Surrow/Vector")
+            dependencies: ["Box","Circle","Collidable","Line","Point","Polygon","Segment","Size"],
+            path: "Swift/Sources/Surrow")
         
     ]
 )
