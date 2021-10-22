@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Box: Collidable, CustomStringConvertible {
+public class Box: CustomStringConvertible {
     // ----- Static ----- //
     public var unit: Box {
         Box(x: 0, y: 0, width: 1, height: 1)
@@ -42,14 +42,6 @@ public class Box: Collidable, CustomStringConvertible {
     }
     
     // ----- Tests ----- //
-    public func collides(with collidable: Collidable) -> Vector? {
-        switch collidable {
-        case is Box: return collides(with: collidable as! Box)
-        case is Circle: return collides(with: collidable as! Circle)
-        case is Polygon: return collides(with: collidable as! Polygon)
-        default: return nil
-        }
-    }
     public func collides(with segment: Segment) -> Vector? {
         return nil
     }
@@ -92,7 +84,7 @@ public class Box: Collidable, CustomStringConvertible {
         
         var pointVector: Vector = Vector.zero
         for point in polygon.points {
-            if point.within(circle: circle) {
+            if point.within(circle) {
                 let vector = circle.position.delta(to: point)
                 pointVector = vector.normal * (circle.radius - vector.length)
             }

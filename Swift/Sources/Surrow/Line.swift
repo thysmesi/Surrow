@@ -54,7 +54,7 @@ public class Line {
     public func intercects(segment: Segment) -> Point?{
         let intercect = intercects(line: segment.line)
         if let intercect = intercect {
-            if intercect.within(box: segment.bounding) {
+            if intercect.on(segment) {
                 return intercect
             }
         }

@@ -64,7 +64,7 @@ public class Point: Hashable, Decodable, CustomStringConvertible {
     }
     public func closest(on segment: Segment) -> Point {
         let intercect = closest(on: segment.line)
-        if intercect.within(box: segment.bounding) {
+        if intercect.on(segment) {
             return intercect
         }
         return distance(to: segment.p1) < distance(to: segment.p2) ? segment.p1 : segment.p2
@@ -87,24 +87,20 @@ public class Point: Hashable, Decodable, CustomStringConvertible {
     public func closest(on circle: Circle) -> Point {
         circle.position + (circle.position.delta(to: self).normal * circle.radius)
     }
-
-    public func within(_ collidable: Collidable) -> Bool {
-        switch collidable {
-        case is Box: return within(box: collidable as! Box)
-        case is Circle: return within(circle: collidable as! Circle)
-        case is Polygon: return within(polygon: collidable as! Polygon)
-        default: return false
-        }
+    public func within(_ box: Box) -> Bool {
+        x >= box.left && x <= box.right && y >= box.top && y <= box.bottom
     }
-    public func within(box: Box) -> Bool {
-        x >= floor(100000.0 * box.left) / 100000.0 && x <= ceil(100000.0 * box.right) / 100000.0 && y >= floor(100000.0 * box.top) / 100000.0 && y <= ceil(100000.0 * box.bottom) / 100000.0
-    }
-    public func within(polygon: Polygon) -> Bool {
+    public func within(_ polygon: Polygon) -> Bool {
         let test = Segment(p1: self, p2: Point(x: 10000, y: y))
         return test.intercects(polygon: polygon).count % 2 == 1
     }
-    public func within(circle: Circle) -> Bool {
+    public func within(_ circle: Circle) -> Bool {
         distance(to: circle.position) <= circle.radius
+    }
+    
+    public func on(_ segment: Segment) -> Bool {
+        x >= floor(segment.min.x) && x <= ceil(segment.max.x) &&
+        y >= floor(segment.min.y) && y <= ceil(segment.max.y)
     }
     
     public func distance(to point: Point) -> Double {

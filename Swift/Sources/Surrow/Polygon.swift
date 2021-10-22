@@ -7,19 +7,7 @@
 
 import Foundation
 
-public class Polygon: Collidable {
-    // ----- Static ----- //
-    public static func flattenPointsOn(points: [Point], normal: Vector) -> ClosedRange<Double> {
-        var min = Double.greatestFiniteMagnitude
-        var max = -Double.greatestFiniteMagnitude
-        for index in 0..<points.count {
-            let dot = points[index].dot(normal)
-            if (dot < min) { min = dot; }
-            if (dot > max) { max = dot; }
-        }
-        return min...max
-    }
-    
+public class Polygon {
     // ----- Independent ----- //
     public var relatives: [Point]
     public var position: Point
@@ -159,14 +147,6 @@ public class Polygon: Collidable {
         
         return largest
     }
-    public func collides(with collidable: Collidable) -> Vector? {
-        switch collidable {
-        case is Box: return collides(with: collidable as! Box)
-        case is Circle: return collides(with: collidable as! Circle)
-        case is Polygon: return collides(with: collidable as! Polygon)
-        default: return nil
-        }
-    }
     public func collides(with box: Box) -> Vector? {
         return collides(with: box.polygon)
     }
@@ -182,7 +162,7 @@ public class Polygon: Collidable {
         } else {
             var within: [Point] = []
             for point in points {
-                if point.within(polygon: polygon) {
+                if point.within(polygon) {
                     within.append(point)
                 }
             }
@@ -216,7 +196,7 @@ public class Polygon: Collidable {
             
             within = []
             for point in polygon.points{
-                if point.within(polygon: self) {
+                if point.within(self) {
                     within.append(point)
                 }
             }

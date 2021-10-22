@@ -44,7 +44,7 @@ public class Segment: Line, Decodable {
     public override func intercects(segment: Segment) -> Point? {
         let intercect = intercects(line: segment.line)
         if let intercect = intercect {
-            if intercect.within(box: segment.bounding) {
+            if intercect.on(segment) {
                 return intercect
             }
         }
@@ -64,7 +64,7 @@ public class Segment: Line, Decodable {
     }
     public override func intercects(circle: Circle) -> [Point] {
         let intercections = super.intercects(circle: circle)
-        return intercections.filter {$0.within(box: bounding)}
+        return intercections.filter {$0.within(bounding)}
     }
     
     // ----- Conversions ----- //

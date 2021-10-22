@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Circle: Collidable {
+public class Circle {
     // ----- Static ----- //
     public static var unit: Circle {
         Circle(position: Point.origin, radius: 1)
@@ -43,14 +43,6 @@ public class Circle: Collidable {
     }
     
     // ----- Conformance ----- //
-    public func collides(with collidable: Collidable) -> Vector? {
-        switch collidable {
-        case is Box: return collides(with: collidable as! Box)
-        case is Circle: return collides(with: collidable as! Circle)
-        case is Polygon: return collides(with: collidable as! Polygon)
-        default: return nil
-        }
-    }
     public func collides(with segment: Segment) -> Vector? {
         let closest = position.closest(on: segment)
         
