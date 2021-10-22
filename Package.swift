@@ -53,7 +53,7 @@ let package = Package(
         .target(
             name: "Vector",
             dependencies: [],
-            path: "Swift/Sources/Surrow")
+            path: "Swift/Sources/Surrow/Vector.swift")
         
     ]
 )
