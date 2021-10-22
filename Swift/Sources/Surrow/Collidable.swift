@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Collidable {
+public protocol Collidable {
     var position: Point { get set }
     var bounding: Box { get }
     

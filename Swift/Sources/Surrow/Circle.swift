@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Circle: Collidable {
+public class Circle: Collidable {
     // ----- Static ----- //
     static var unit: Circle {
         Circle(position: Point.origin, radius: 1)

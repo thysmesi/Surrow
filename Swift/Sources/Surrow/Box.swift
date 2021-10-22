@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Box: Collidable, CustomStringConvertible {
+public class Box: Collidable, CustomStringConvertible {
     // ----- Static ----- //
     var unit: Box {
         Box(x: 0, y: 0, width: 1, height: 1)

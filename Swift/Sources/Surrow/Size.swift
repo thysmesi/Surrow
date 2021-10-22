@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Size {
+public class Size {
     // ----- Static ----- //
     static var zero: Size {
         Size(width: 0, height: 0)

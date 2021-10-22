@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Segment: Line, Decodable {
+public class Segment: Line, Decodable {
     // ----- Static ----- //
     
     // ----- Independent ----- //

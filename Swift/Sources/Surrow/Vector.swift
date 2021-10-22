@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Vector: CustomStringConvertible {
+public class Vector: CustomStringConvertible {
     // ----- Static ----- //
     static var zero: Vector {
         Vector(dx: 0, dy: 0)

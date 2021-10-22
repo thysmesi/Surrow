@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-class Line {
+public class Line {
     // ----- Static ----- //
     
     // ----- Independent ----- //

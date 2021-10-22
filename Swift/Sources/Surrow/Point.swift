@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Point: Hashable, Decodable, CustomStringConvertible {
+public class Point: Hashable, Decodable, CustomStringConvertible {
     // ----- Static ----- //
     static var origin: Point {
         Point(x: 0, y: 0)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Polygon: Collidable {
+public class Polygon: Collidable {
     // ----- Static ----- //
     static func flattenPointsOn(points: [Point], normal: Vector) -> ClosedRange<Double> {
         var min = Double.greatestFiniteMagnitude
