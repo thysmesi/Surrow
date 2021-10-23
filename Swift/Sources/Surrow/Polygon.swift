@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 
+@available(iOS 13.0, *)
 @available(macOS 10.15, *)
 class Polygon: CustomStringConvertible, Hashable, Codable {
     // MARK: - Statics
