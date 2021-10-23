@@ -161,6 +161,18 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     }
     private var _sides: [Segment]? = nil
     
+    public var center: Point {
+        if _center == nil {
+            var sum = Point.origin
+            for point in points {
+                sum += point
+            }
+            _center = sum / Double(points.count)
+        }
+        return _center!
+    }
+    private var _center: Point? = nil
+    
     
     // MARK: - Adjustments
     
