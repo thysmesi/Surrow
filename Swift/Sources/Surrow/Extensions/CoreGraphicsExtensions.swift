@@ -9,14 +9,14 @@ import CoreGraphics
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-extension CGSize {
+public extension CGSize {
     init(_ size: Size) {
         self.init(width: size.width, height: size.height)
     }
 }
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-extension Size {
+public extension Size {
     init(_ cg: CGSize) {
         self.init(cg.width, cg.height)
     }
