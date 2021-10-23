@@ -9,26 +9,26 @@ import Foundation
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-class Box: CustomStringConvertible, Hashable, Codable {
+public class Box: CustomStringConvertible, Hashable, Codable {
     // MARK: - Statics
-    static var zero: Box {
+    public static var zero: Box {
         Box(position: Point.origin, size: Size.zero)
     }
-    static var unit: Box {
+    public static var unit: Box {
         Box(position: Point.origin, size: Size.unit)
     }
     
     // MARK: - Indepenants
-    let id = UUID()
-    var position: Point
-    var size: Size
+    public let id = UUID()
+    public var position: Point
+    public var size: Size
     
     
     // MARK: - Dependants
-    var left: Double { position.x }
-    var right: Double { position.x + size.width }
-    var top: Double { position.y }
-    var bottom: Double { position.y + size.height}
+    public var left: Double { position.x }
+    public var right: Double { position.x + size.width }
+    public var top: Double { position.y }
+    public var bottom: Double { position.y + size.height}
     
     
     // MARK: - Adjustments
@@ -38,11 +38,11 @@ class Box: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Initializers
-    init(position: Point, size: Size) {
+    public init(position: Point, size: Size) {
         self.position = position
         self.size = size
     }
-    init(_ box: Box) {
+    public init(_ box: Box) {
         self.position = box.position
         self.size = box.size
     }
@@ -50,14 +50,14 @@ class Box: CustomStringConvertible, Hashable, Codable {
     
     // MARK: - Conformance
     // ----- CustomStringConvertible ----- //
-    var description: String {
+    public var description: String {
         "Box(position: \(position), size: \(size))"
     }
     // ----- Hashable ----- //
-    static func == (lhs: Box, rhs: Box) -> Bool {
+    public static func == (lhs: Box, rhs: Box) -> Bool {
         lhs.position == rhs.position && lhs.size == rhs.size
     }
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     // ----- Codable ----- //
@@ -65,7 +65,7 @@ class Box: CustomStringConvertible, Hashable, Codable {
         case position
         case size
     }
-    required init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.position = try container.decode(Point.self, forKey: .position)
         self.size = try container.decode(Size.self, forKey: .size)

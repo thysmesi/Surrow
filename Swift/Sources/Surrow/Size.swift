@@ -9,24 +9,24 @@ import Foundation
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-struct Size: CustomStringConvertible, Hashable, Codable {
+public struct Size: CustomStringConvertible, Hashable, Codable {
     // MARK: - Statics
-    static var zero: Size {
+    public static var zero: Size {
         Size(0, 0)
     }
-    static var unit: Size {
+    public static var unit: Size {
         Size(1, 1)
     }
     
     // MARK: - Indepenants
-    let id = UUID()
-    var width: Double
-    var height: Double
+    public let id = UUID()
+    public var width: Double
+    public var height: Double
     
     
     // MARK: - Dependants
-    var point: Point { Point(width, height) }
-    var vector: Vector { Vector(width, height) }
+    public var point: Point { Point(width, height) }
+    public var vector: Vector { Vector(width, height) }
     
     
     // MARK: - Adjustments
@@ -36,11 +36,11 @@ struct Size: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Initializers
-    init(_ width: Double, _ height: Double) {
+    public init(_ width: Double, _ height: Double) {
         self.width = width
         self.height = height
     }
-    init(_ size: Size) {
+    public init(_ size: Size) {
         self.width = size.width
         self.height = size.height
     }
@@ -48,14 +48,14 @@ struct Size: CustomStringConvertible, Hashable, Codable {
     
     // MARK: - Conformance
     // ----- CustomStringConvertible ----- //
-    var description: String {
+    public var description: String {
         "Size(width: \(width), height: \(height))"
     }
     // ----- Hashable ----- //
-    static func == (lhs: Size, rhs: Size) -> Bool {
+    public static func == (lhs: Size, rhs: Size) -> Bool {
         lhs.width == rhs.width && lhs.height == rhs.height
     }
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     // ----- Codable ----- //
@@ -63,7 +63,7 @@ struct Size: CustomStringConvertible, Hashable, Codable {
         case width
         case height
     }
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.width = try container.decode(Double.self, forKey: .width)
         self.height = try container.decode(Double.self, forKey: .height)

@@ -9,27 +9,27 @@ import Foundation
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-class Line: CustomStringConvertible, Hashable, Codable {
+public class Line: CustomStringConvertible, Hashable, Codable {
     // MARK: - Statics
     
     
     // MARK: - Indepenants
-    let id = UUID()
-    var p1: Point
-    var p2: Point
+    public let id = UUID()
+    public var p1: Point
+    public var p2: Point
     
     
     // MARK: - Dependants
-    var slope: Double {
+    public var slope: Double {
         (p2.y - p1.y) / (p2.x - p1.x)
     }
-    var perpendicular: Double {
+    public var perpendicular: Double {
         1 / -slope
     }
-    var yIntercept: Double {
+    public var yIntercept: Double {
         y(0)
     }
-    var xIntercept: Double {
+    public var xIntercept: Double {
         x(0)
     }
     
@@ -38,14 +38,14 @@ class Line: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Testing
-    func y(_ x: Double) -> Double {
+    public func y(_ x: Double) -> Double {
         (slope*x) - (slope*p1.x) + p1.y
     }
-    func x(_ y: Double) -> Double {
+    public func x(_ y: Double) -> Double {
         (y/slope) - (p1.y/slope) + p1.x
     }
     
-    func intercects(_ other: Line) -> Point?{
+    public func intercects(_ other: Line) -> Point?{
         if slope == other.slope {
             return nil
         }
@@ -62,14 +62,14 @@ class Line: CustomStringConvertible, Hashable, Codable {
         
         return Point(x, y)
     }
-    func intercects(_ segment: Segment) -> Point?{
+    public func intercects(_ segment: Segment) -> Point?{
         let intercect = intercects(segment.line)
         if let intercect = intercect, intercect.fluffy(on: segment) {
             return intercect
         }
         return nil
     }
-    func intercects(_ polygon: Polygon) -> [Point] {
+    public func intercects(_ polygon: Polygon) -> [Point] {
         var output: [Point] = []
         for segment in polygon.sides {
             if let intercect = intercects(segment) {
@@ -80,19 +80,19 @@ class Line: CustomStringConvertible, Hashable, Codable {
     }
     
     // MARK: - Initializers
-    init(p1: Point, p2: Point) {
+    public init(p1: Point, p2: Point) {
         self.p1 = p1
         self.p2 = p2
     }
-    init(slope: Double, point: Point) {
+    public init(slope: Double, point: Point) {
         self.p1 = point
         self.p2 = Point(point.x + 1, point.y + slope)
     }
-    init(slope: Double, yIntercept: Double) {
+    public init(slope: Double, yIntercept: Double) {
         self.p1 = Point(0, yIntercept)
         self.p2 = Point(1, slope + yIntercept)
     }
-    init(_ line: Line) {
+    public init(_ line: Line) {
         self.p1 = line.p1
         self.p2 = line.p2
     }
@@ -100,14 +100,14 @@ class Line: CustomStringConvertible, Hashable, Codable {
     
     // MARK: - Conformance
     // ----- CustomStringConvertible ----- //
-    var description: String {
+    public var description: String {
         "Line(p1: \(p1), p2: \(p2))"
     }
     // ----- Hashable ----- //
-    static func == (lhs: Line, rhs: Line) -> Bool {
+    public static func == (lhs: Line, rhs: Line) -> Bool {
         lhs.p1 == rhs.p1 && lhs.p2 == rhs.p2
     }
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     // ----- Codable ----- //
@@ -115,7 +115,7 @@ class Line: CustomStringConvertible, Hashable, Codable {
         case p1
         case p2
     }
-    required init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.p1 = try container.decode(Point.self, forKey: .p1)
         self.p2 = try container.decode(Point.self, forKey: .p2)

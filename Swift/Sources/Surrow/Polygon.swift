@@ -10,29 +10,29 @@ import Combine
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-class Polygon: CustomStringConvertible, Hashable, Codable {
+public class Polygon: CustomStringConvertible, Hashable, Codable {
     // MARK: - Statics
-    class Vertex: CustomStringConvertible, Hashable, Codable {
+    public class Vertex: CustomStringConvertible, Hashable, Codable {
         // MARK: - Indepenants
-        let id = UUID()
-        var position: Point
-        var last: Vertex!
-        var next: Vertex!
+        public let id = UUID()
+        public var position: Point
+        public var last: Vertex!
+        public var next: Vertex!
         
         
         // MARK: - Dependants
-        var interior: Double {
+        public var interior: Double {
             (position.delta(to: last.position).perpendicular.normal + next.position.delta(to: position).perpendicular.normal).normal.degrees.degreesSimplified
         }
-        var exterior: Double {
+        public var exterior: Double {
             (last.position.delta(to: position).perpendicular.normal + position.delta(to: next.position).perpendicular.normal).normal.degrees.degreesSimplified
         }
-        var tip: Bool {
+        public var tip: Bool {
             let ll = last.position.delta(to: position).perpendicular.normal
             let nl = position.delta(to: next.position).perpendicular.normal
             return ((ll.degrees - nl.degrees)).degreesSimplified > 180
         }
-        var cave: Bool {
+        public var cave: Bool {
             !tip
         }
         
@@ -43,12 +43,12 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
         
         
         // MARK: - Initializers
-        init(position: Point, last: Vertex? = nil, next: Vertex? = nil) {
+        public init(position: Point, last: Vertex? = nil, next: Vertex? = nil) {
             self.position = position
             self.last = last
             self.next = next
         }
-        init(_ vertex: Vertex) {
+        public init(_ vertex: Vertex) {
             self.position = vertex.position
             self.last = vertex.last
             self.next = vertex.next
@@ -57,11 +57,11 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
         
         // MARK: - Conformance
         // ----- CustomStringConvertible ----- //
-        var description: String {
+        public var description: String {
             "Vertex(position: \(position))"
         }
         // ----- Hashable ----- //
-        static func == (lhs: Vertex, rhs: Vertex) -> Bool {
+        public static func == (lhs: Vertex, rhs: Vertex) -> Bool {
             let cpos = lhs.position == rhs.position
             var clast = false
             var cnext = false
@@ -77,7 +77,7 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
             }
             return cpos && clast && cnext
         }
-        func hash(into hasher: inout Hasher) {
+        public func hash(into hasher: inout Hasher) {
             hasher.combine(id)
         }
         // ----- Codable ----- //
@@ -86,7 +86,7 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
             case last
             case next
         }
-        required init(from decoder: Decoder) throws {
+        public required init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.position = try container.decode(Point.self, forKey: .position)
             self.next = try container.decode(Vertex.self, forKey: .next)
@@ -98,12 +98,12 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
     }
     
     // MARK: - Indepenants
-    let id = UUID()
-    @Published var points: [Point]
+    public let id = UUID()
+    @Published public var points: [Point]
     
     
     // MARK: - Dependants
-    var vertices: [Vertex] {
+    public var vertices: [Vertex] {
         if _vertices == nil {
             var vertices: [Vertex] = []
             for point in points {
@@ -119,7 +119,7 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
     }
     private var _vertices: [Vertex]? = nil
     
-    var triangles: [Polygon] {
+    public var triangles: [Polygon] {
         if _triangles == nil {
             var triangles: [Polygon] = []
             var left = vertices.map { Vertex($0) }
@@ -149,7 +149,7 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
     }
     private var _triangles: [Polygon]?
     
-    var sides: [Segment] {
+    public var sides: [Segment] {
         if _sides == nil {
             var segments: [Segment] = []
             for vertex in vertices {
@@ -169,11 +169,11 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Initializers
-    init(points: [Point]) {
+    public init(points: [Point]) {
         self.points = points
         createObserver()
     }
-    init(_ polygon: Polygon) {
+    public init(_ polygon: Polygon) {
         self.points = polygon.points
         createObserver()
     }
@@ -188,25 +188,25 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
     
     // MARK: - Conformance
     // ----- CustomStringConvertible ----- //
-    var description: String {
+    public var description: String {
         "Polygon(points: \(points))"
     }
     // ----- Hashable ----- //
-    static func == (lhs: Polygon, rhs: Polygon) -> Bool {
+    public static func == (lhs: Polygon, rhs: Polygon) -> Bool {
         lhs.points == rhs.points
     }
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     // ----- Codable ----- //
     private enum CodingKeys: String, CodingKey {
         case points
     }
-    required init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.points = try container.decode([Point].self, forKey: .points)
     }
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(points, forKey: .points)
     }

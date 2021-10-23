@@ -9,19 +9,19 @@ import Foundation
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-class Circle: CustomStringConvertible, Hashable, Codable {
+public class Circle: CustomStringConvertible, Hashable, Codable {
     // MARK: - Statics
-    static var zero: Circle {
+    public static var zero: Circle {
         Circle(position: Point.origin, radius: 0)
     }
-    static var unit: Circle {
+    public static var unit: Circle {
         Circle(position: Point.origin, radius: 1)
     }
     
     // MARK: - Indepenants
-    let id = UUID()
-    var position: Point
-    var radius: Double
+    public let id = UUID()
+    public var position: Point
+    public var radius: Double
     
     
     // MARK: - Dependants
@@ -34,11 +34,11 @@ class Circle: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Initializers
-    init(position: Point, radius: Double) {
+    public init(position: Point, radius: Double) {
         self.position = position
         self.radius = radius
     }
-    init(_ circle: Circle) {
+    public init(_ circle: Circle) {
         self.position = circle.position
         self.radius = circle.radius
     }
@@ -46,14 +46,14 @@ class Circle: CustomStringConvertible, Hashable, Codable {
     
     // MARK: - Conformance
     // ----- CustomStringConvertible ----- //
-    var description: String {
+    public var description: String {
         "Circle(position: \(position), radius: \(radius))"
     }
     // ----- Hashable ----- //
-    static func == (lhs: Circle, rhs: Circle) -> Bool {
+    public static func == (lhs: Circle, rhs: Circle) -> Bool {
         lhs.position == rhs.position && lhs.radius == rhs.radius
     }
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     // ----- Codable ----- //
@@ -61,7 +61,7 @@ class Circle: CustomStringConvertible, Hashable, Codable {
         case position
         case radius
     }
-    required init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.position = try container.decode(Point.self, forKey: .position)
         self.radius = try container.decode(Double.self, forKey: .radius)
