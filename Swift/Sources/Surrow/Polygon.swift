@@ -1,250 +1,175 @@
 //
 //  Polygon.swift
-//  Conquerors
+//  PolygonMaster
 //
-//  Created by App Dev on 9/14/21.
+//  Created by Corbin Bigler on 10/22/21.
 //
 
 import Foundation
 
-public class Polygon {
-    // ----- Independent ----- //
-    public var relatives: [Point]
-    public var position: Point
-    
-    // ----- Dependent ----- //
-    public var min: Point {
-        var current = points[0]
-        for point in points {
-            current = Point(x: Swift.min(current.x, point.x), y: Swift.min(current.y, point.y))
+class Polygon: CustomStringConvertible, Hashable, Codable {
+    // MARK: - Statics
+    class Vertex: CustomStringConvertible, Hashable, Codable {
+        // MARK: - Indepenants
+        let id = UUID()
+        var position: Point
+        var last: Vertex!
+        var next: Vertex!
+        
+        
+        // MARK: - Dependants
+        var interior: Double {
+            (position.delta(to: last.position).perpendicular.normal + next.position.delta(to: position).perpendicular.normal).normal.degrees.degreesSimplified
         }
-        return current
-    }
-    public var max: Point {
-        var current = points[0]
-        for point in points {
-            current = Point(x: Swift.max(current.x, point.x), y: Swift.max(current.y, point.y))
+        var exterior: Double {
+            (last.position.delta(to: position).perpendicular.normal + position.delta(to: next.position).perpendicular.normal).normal.degrees.degreesSimplified
         }
-        return current
-    }
-    public var points: [Point] {
-        var output: [Point] = []
-        for point in relatives {
-            output.append(point + position)
+        var tip: Bool {
+            let ll = last.position.delta(to: position).perpendicular.normal
+            let nl = position.delta(to: next.position).perpendicular.normal
+            return ((ll.degrees - nl.degrees)).degreesSimplified > 180
         }
-        return output
-    }
-    public var normals: [Vector] {
-        var output: [Vector] = []
-        for index in 0..<edges.count {
-            output.append(edges[index].perpendicular.normal)
-        }
-        return output
-    }
-    public var edges: [Vector] {
-        var output: [Vector] = []
-        for index in 0..<relatives.count {
-            let p1 = relatives[index]
-            let p2 = index < relatives.count - 1 ? relatives[index + 1] : relatives[0]
-
-            output.append(p1.delta(to: p2))
-        }
-        return output
-    }
-    public var segments: [Segment] {
-        var output: [Segment] = []
-        for index in 0..<points.count {
-            output.append(Segment(
-                p1: points[index],
-                p2: index == points.count-1 ? points[0] : points[index+1]
-            ))
-        }
-        return output
-    }
-    public var bounding: Box {
-        let width = max.x - min.x
-        let height = max.y - min.y
-        return Box(position: Point(x: max.x - (width/2), y: max.y - (height / 2)), size: Size(width: width, height: height))
-    }
-    public var middle: Point {
-        var sum = Point.origin
-        for point in points {
-            sum += point
-        }
-        return sum / Double(points.count)
-    }
-    
-    public var convex: Bool {
-        // ----- Souce: https://stackoverflow.com/questions/471962/how-do-i-efficiently-determine-if-a-polygon-is-convex-non-convex-or-complex ----- //
-        if normals.count < 4 {
-            return true
+        var cave: Bool {
+            !tip
         }
         
-        var sign = false
-        let count = relatives.count
-        for index in 0..<count {
-            let d1 = Vector(
-                dx: relatives[(index + 2) % count].x - relatives[(index + 1) % count].x,
-                dy: relatives[(index + 2) % count].y - relatives[(index + 1) % count].y
-            )
-            let d2 = Vector(
-                dx: relatives[index].x - relatives[(index + 1) % count].x,
-                dy: relatives[index].y - relatives[(index + 1) % count].y
-            )
-            let zcross = d1.cross(d2)
-            
-            if index == 0 {
-                sign = zcross > 0
-            } else if sign != (zcross > 0) {
-                return false
-            }
-        }
-        return false
-    }
-    
-    
-    // ----- Initializers ----- //
-    public init(relatives: [Point], position: Point) {
-        self.relatives = relatives
-        self.position = position
-    }
-    public init(points: [Point]) {
-        self.relatives = points
-        self.position = Point.origin
-    }
-    
-    // ----- Tests ----- //
-    public func rotated(degrees: Double) -> Polygon {
-        Polygon(relatives: relatives.map {$0.rotated(around: Point.origin, degrees: degrees)}, position: position)
-    }
-    public func collides(with segment: Segment) -> Vector? {
-        var greater: [Vector] = []
-        var lesser: [Vector] = []
+        // MARK: - Adjustments
         
-        var tests: Set<Point> = []
-        for side in segments {
-            if let _ = side.intercects(segment: segment) {
-                tests.insert(side.p1)
-                tests.insert(side.p2)
-            }
+        
+        // MARK: - Testing
+        
+        
+        // MARK: - Initializers
+        init(position: Point, last: Vertex? = nil, next: Vertex? = nil) {
+            self.position = position
+            self.last = last
+            self.next = next
         }
-        for point in tests {
-            if ((point.x-segment.p1.x)*(segment.p2.y-segment.p1.y)) - ((point.y - segment.p1.y)*(segment.p2.x-segment.p1.x)) > 0 {
-                greater.append(point.delta(to: point.closest(on: segment)))
+        init(_ vertex: Vertex) {
+            self.position = vertex.position
+            self.last = vertex.last
+            self.next = vertex.next
+        }
+        
+        
+        // MARK: - Conformance
+        // ----- CustomStringConvertible ----- //
+        var description: String {
+            "Vertex(position: \(position))"
+        }
+        // ----- Hashable ----- //
+        static func == (lhs: Vertex, rhs: Vertex) -> Bool {
+            let cpos = lhs.position == rhs.position
+            var clast = false
+            var cnext = false
+            if let ll = lhs.last, let rl = rhs.last {
+                clast = ll.id == rl.id
             } else {
-                lesser.append(point.delta(to: point.closest(on: segment)))
+                clast = lhs.last == nil && rhs.last == nil
             }
+            if let ln = lhs.next, let rn = rhs.next {
+                cnext = ln.id == rn.id
+            } else {
+                cnext = lhs.next == nil && rhs.next == nil
+            }
+            return cpos && clast && cnext
+        }
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+        // ----- Codable ----- //
+        private enum CodingKeys: String, CodingKey {
+            case position
+            case last
+            case next
+        }
+        required init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.position = try container.decode(Point.self, forKey: .position)
+            self.next = try container.decode(Vertex.self, forKey: .next)
+            self.last = try container.decode(Vertex.self, forKey: .last)
         }
         
-        var greaterSum: Double = 0
-        for vector in greater {
-            greaterSum += vector.length
-        }
-        var lesserSum: Double = 0
-        for vector in lesser {
-            lesserSum += vector.length
-        }
         
-        var largest: Vector? = nil
-        for vector in (greaterSum > lesserSum ? lesser : greater) {
-            if largest == nil || vector.length > largest!.length {
-                largest = vector
-            }
-        }
-        
-        return largest
-    }
-    public func collides(with box: Box) -> Vector? {
-        return collides(with: box.polygon)
-    }
-
-    public func collides(with circle: Circle) -> Vector? {
-        let vector = circle.collides(with: self)
-        return vector == nil ? nil : -vector!
-    }
-
-    public func collides(with polygon: Polygon) -> Vector? {
-        if convex && polygon.convex && false {
-
-        } else {
-            var within: [Point] = []
-            for point in points {
-                if point.within(polygon) {
-                    within.append(point)
-                }
-            }
-            var aIntercecting: [Segment] = []
-            var bIntercecting: [Segment] = []
-            for a in segments {
-                for b in polygon.segments {
-                    if let _ = a.intercects(segment: b) {
-                        aIntercecting.append(a)
-                        bIntercecting.append(b)
-                    }
-                }
-            }
-            var smallest: Vector? = nil
-            for point in within {
-                var smallestToSegment: Vector? = nil
-                for segment in bIntercecting {
-                    let vector = point.delta(to: segment)
-                    if smallestToSegment == nil || vector.length < smallestToSegment!.length {
-                        smallestToSegment = vector
-                    }
-                }
-                if smallest == nil || smallestToSegment!.length < smallest!.length {
-                    smallest = smallestToSegment
-                }
-            }
-                         
-            if let smallest = smallest {
-                 return smallest
-            }
-            
-            within = []
-            for point in polygon.points{
-                if point.within(self) {
-                    within.append(point)
-                }
-            }
-            smallest = nil
-            for point in within {
-                var smallestToSegment: Vector? = nil
-                for segment in aIntercecting {
-                    let vector = point.delta(to: segment)
-                    if smallestToSegment == nil || vector.length < smallestToSegment!.length {
-                        smallestToSegment = vector
-                    }
-                }
-                if smallest == nil || smallestToSegment!.length < smallest!.length {
-                    smallest = smallestToSegment
-                }
-            }
-            
-            if let smallest = smallest {
-                 return -smallest
-            }
-        }
-        return nil
+        // MARK: - Operators
     }
     
-    // ----- Operators ----- //
-    /* ----- TODO -----
-        Polygon * = Float
-        Polygon / = Float
-    */
-    public static func *(lhs: Polygon, rhs: Double) -> Polygon {
-        Polygon(relatives: lhs.relatives.map {$0 * rhs} , position: lhs.position)
+    // MARK: - Indepenants
+    let id = UUID()
+    var points: [Point]
+    
+    
+    // MARK: - Dependants
+    var vertices: [Vertex] {
+        var vertices: [Vertex] = []
+        for point in points {
+            vertices.append(Vertex(position: point))
+        }
+        for index in vertices.indices {
+            vertices[index].last = vertices[index == 0 ? vertices.count-1 : index-1]
+            vertices[index].next = vertices[index == vertices.count-1 ? 0 : index+1]
+        }
+        return vertices
     }
-    public static func *=(lhs: inout Polygon, rhs: Double) {
-        lhs.relatives = lhs.relatives.map {$0 * rhs}
+    var triangles: [Polygon] {
+        var triangles: [Polygon] = []
+        var left = vertices
+        
+        while left.count > 3 {
+            for index in left.indices {
+                let vertex = left[index]
+                if vertex.tip {
+                    triangles.append(Polygon(points: [vertex.last.position, vertex.position, vertex.next.position]))
+                    vertex.last.next = vertex.next
+                    vertex.next.last = vertex.last
+                    left.remove(at: index)
+                    let removed = left.removeFirst()
+                    left.append(removed)
+                    break
+                }
+            }
+        }
+        triangles.append(Polygon(points: [left[0].position, left[1].position, left[2].position]))
+        return triangles
     }
     
-    // ----- Conformance ----- //
-    /* ----- TODO -----
-        Codable
-        Hashable
-        Equatable
-        CustomStringConvertible
-    */
+    
+    // MARK: - Adjustments
+    
+    
+    // MARK: - Testing
+    
+    
+    // MARK: - Initializers
+    init(points: [Point]) {
+        self.points = points
+    }
+    init(_ polygon: Polygon) {
+        self.points = polygon.points
+    }
+    
+    
+    // MARK: - Conformance
+    // ----- CustomStringConvertible ----- //
+    var description: String {
+        "Polygon(points: \(points))"
+    }
+    // ----- Hashable ----- //
+    static func == (lhs: Polygon, rhs: Polygon) -> Bool {
+        lhs.points == rhs.points
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    // ----- Codable ----- //
+    private enum CodingKeys: String, CodingKey {
+        case points
+    }
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.points = try container.decode([Point].self, forKey: .points)
+    }
+    
+    
+    // MARK: - Operators
 }

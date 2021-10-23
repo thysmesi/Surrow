@@ -1,180 +1,180 @@
 //
 //  Vector.swift
-//  Collision
+//  PolygonMaster
 //
-//  Created by App Dev on 9/13/21.
+//  Created by Corbin Bigler on 10/22/21.
 //
 
 import Foundation
 
-public class Vector: CustomStringConvertible {
-    // ----- Static ----- //
-    public static var zero: Vector {
-        Vector(dx: 0, dy: 0)
+class Vector: CustomStringConvertible, Hashable, Codable {
+    // MARK: - Statics
+    static var zero: Vector {
+        Vector(0, 0)
     }
     
-    // ----- Independent ----- //
-    public var dx: Double
-    public var dy: Double
+    // MARK: - Indepenants
+    let id = UUID()
+    var dx: Double
+    var dy: Double
     
-    // ----- Dependent ----- //
     
-    public var normal: Vector {
-        if(length == 0) {
-            return Vector(dx: Double.random(in: -1...1), dy: Double.random(in: -1...1)).normal
-        } else {
-            return Vector(dx: dx/length, dy: dy/length)
-        }
-    }
-    public var perpendicular: Vector {
-        Vector(dx: dy, dy: -dx)
-    }
-    public var length: Double {
+    // MARK: - Dependants
+    var point: Point { Point(dx, dy) }
+    var size: Size { Size(dx, dy) }
+    
+    var length: Double {
         abs(sqrt(pow(dx,2)+pow(dy,2)))
     }
-    public var degrees: Double {
+    var degrees: Double {
         atan2(dy, dx) / (Double.pi / 180)
     }
+    var normal: Vector {
+        if(length == 0) {
+            return Vector(Double.random(in: -1...1), Double.random(in: -1...1)).normal
+        } else {
+            return Vector(dx/length, dy/length)
+        }
+    }
+    var perpendicular: Vector {
+        Vector(dy, -dx)
+    }
     
-    // ----- Initializers ----- //
-    public init(dx: Double, dy: Double) {
+    
+    // MARK: - Adjustments
+    func cross(_ other: Vector) -> Double {
+        dx * other.dy - dy * other.dx
+    }
+    func dot(_ other: Vector) -> Double {
+        dx * other.dx + dy * other.dy
+    }
+    
+    
+    // MARK: - Testing
+    
+    
+    // MARK: - Initializers
+    init(_ dx: Double, _ dy: Double) {
         self.dx = dx
         self.dy = dy
     }
-    public init(angle: Double) {
-        let radians = angle * (Double.pi / 180)
-        
-        self.dx = cos(radians)
-        self.dy = sin(radians)
+    init(degrees: Double) {
+        self.dx = cos(degrees.toRadians)
+        self.dy = sin(degrees.toRadians)
     }
-    public init(_ other: Vector) {
-        self.dx = other.dx
-        self.dy = other.dy
+    init(_ vector: Vector) {
+        self.dx = vector.dx
+        self.dy = vector.dy
     }
     
-    // ----- Tests ----- //
-    public func cross(_ other: Vector) -> Double {
-        dx * other.dy - dy * other.dx
+    
+    // MARK: - Conformance
+    // ----- CustomStringConvertible ----- //
+    var description: String {
+        "Vector(dx: \(dx), dy: \(dy))"
     }
-    public func dot(_ other: Vector) -> Double {
-        dx * other.dx + dy * other.dy
+    // ----- Hashable ----- //
+    static func == (lhs: Vector, rhs: Vector) -> Bool {
+        lhs.dx == rhs.dx && lhs.dy == rhs.dy
     }
-    public func cross(_ other: Point) -> Double {
-        dx * other.y - dy * other.x
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
-    public func dot(_ other: Point) -> Double {
-        dx * other.x + dy * other.y
+    // ----- Codable ----- //
+    private enum CodingKeys: String, CodingKey {
+        case dx
+        case dy
+    }
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.dx = try container.decode(Double.self, forKey: .dx)
+        self.dy = try container.decode(Double.self, forKey: .dy)
     }
     
-    // ----- Conversions ----- //
-    public var size: Size {
-        Size(width: dx, height: dy)
-    }
     
-    // ----- Operators ----- //
-    /* ----- TODO -----
-        Vector / = Point
-        Vector / = Vector
-        Vector / = Float
-    */
-    public static func +(lhs: Vector, rhs: Point) -> Vector {
-        Vector(dx: lhs.dx+rhs.x, dy: lhs.dy+rhs.y)
+    // MARK: - Operators
+    static func +(lhs: Vector, rhs: Point) -> Vector {
+        Vector(lhs.dx+rhs.x, lhs.dy+rhs.y)
     }
-    public static func +=(lhs: inout Vector, rhs: Point) {
+    static func +=(lhs: inout Vector, rhs: Point) {
         lhs.dx += rhs.x
         lhs.dy += rhs.y
     }
-    public static func +(lhs: Vector, rhs: Vector) -> Vector {
-        Vector(dx: lhs.dx+rhs.dx, dy: lhs.dy+rhs.dy)
+    static func +(lhs: Vector, rhs: Vector) -> Vector {
+        Vector(lhs.dx+rhs.dx, lhs.dy+rhs.dy)
     }
-    public static func +=(lhs: inout Vector, rhs: Vector) {
+    static func +=(lhs: inout Vector, rhs: Vector) {
         lhs.dx += rhs.dx
         lhs.dy += rhs.dy
     }
-    public static func +(lhs: Vector, rhs: Double) -> Vector {
-        Vector(dx: lhs.dx+rhs, dy: lhs.dy+rhs)
+    static func +(lhs: Vector, rhs: Double) -> Vector {
+        Vector(lhs.dx+rhs, lhs.dy+rhs)
     }
-    public static func +=(lhs: inout Vector, rhs: Double) {
+    static func +=(lhs: inout Vector, rhs: Double) {
         lhs.dx += rhs
         lhs.dy += rhs
     }
-    public static func -(lhs: Vector, rhs: Point) -> Vector {
-        Vector(dx: lhs.dx-rhs.x, dy: lhs.dy-rhs.y)
+    static func -(lhs: Vector, rhs: Point) -> Vector {
+        Vector(lhs.dx-rhs.x, lhs.dy-rhs.y)
     }
-    public static func -=(lhs: inout Vector, rhs: Point) {
+    static func -=(lhs: inout Vector, rhs: Point) {
         lhs.dx -= rhs.x
         lhs.dy -= rhs.y
     }
-    public static func -(lhs: Vector, rhs: Vector) -> Vector {
-        Vector(dx: lhs.dx-rhs.dx, dy: lhs.dy-rhs.dy)
+    static func -(lhs: Vector, rhs: Vector) -> Vector {
+        Vector(lhs.dx-rhs.dx, lhs.dy-rhs.dy)
     }
-    public static func -=(lhs: inout Vector, rhs: Vector) {
+    static func -=(lhs: inout Vector, rhs: Vector) {
         lhs.dx -= rhs.dx
         lhs.dy -= rhs.dy
     }
-    public static func -(lhs: Vector, rhs: Double) -> Vector {
-        Vector(dx: lhs.dx-rhs, dy: lhs.dy-rhs)
+    static func -(lhs: Vector, rhs: Double) -> Vector {
+        Vector(lhs.dx-rhs, lhs.dy-rhs)
     }
-    public static func -=(lhs: inout Vector, rhs: Double) {
+    static func -=(lhs: inout Vector, rhs: Double) {
         lhs.dx -= rhs
         lhs.dy -= rhs
     }
-    public static func *(lhs: Vector, rhs: Point) -> Vector {
-        Vector(dx: lhs.dx*rhs.x, dy: lhs.dy*rhs.y)
+    static func *(lhs: Vector, rhs: Point) -> Vector {
+        Vector(lhs.dx*rhs.x, lhs.dy*rhs.y)
     }
-    public static func *=(lhs: inout Vector, rhs: Point) {
+    static func *=(lhs: inout Vector, rhs: Point) {
         lhs.dx *= rhs.x
         lhs.dy *= rhs.y
     }
-    public static func *(lhs: Vector, rhs: Vector) -> Vector {
-        Vector(dx: lhs.dx*rhs.dx, dy: lhs.dy*rhs.dy)
+    static func *(lhs: Vector, rhs: Vector) -> Vector {
+        Vector(lhs.dx*rhs.dx, lhs.dy*rhs.dy)
     }
-    public static func *=(lhs: inout Vector, rhs: Vector) {
+    static func *=(lhs: inout Vector, rhs: Vector) {
         lhs.dx *= rhs.dx
         lhs.dy *= rhs.dy
     }
-    public static func *(lhs: Vector, rhs: Double) -> Vector {
-        Vector(dx: lhs.dx*rhs, dy: lhs.dy*rhs)
+    static func *(lhs: Vector, rhs: Double) -> Vector {
+        Vector(lhs.dx*rhs, lhs.dy*rhs)
     }
-    public static func *=(lhs: inout Vector, rhs: Double) {
+    static func *=(lhs: inout Vector, rhs: Double) {
         lhs.dx *= rhs
         lhs.dy *= rhs
     }
-    public static func /(lhs: Vector, rhs: Point) -> Vector {
-        Vector(dx: lhs.dx/rhs.x, dy: lhs.dy/rhs.y)
+    static func /(lhs: Vector, rhs: Point) -> Vector {
+        Vector(lhs.dx/rhs.x, lhs.dy/rhs.y)
     }
-    public static func /=(lhs: inout Vector, rhs: Point) {
+    static func /=(lhs: inout Vector, rhs: Point) {
         lhs.dx /= rhs.x
         lhs.dy /= rhs.y
     }
-    public static func /(lhs: Vector, rhs: Vector) -> Vector {
-        Vector(dx: lhs.dx/rhs.dx, dy: lhs.dy/rhs.dy)
+    static func /(lhs: Vector, rhs: Vector) -> Vector {
+        Vector(lhs.dx/rhs.dx, lhs.dy/rhs.dy)
     }
-    public static func /=(lhs: inout Vector, rhs: Vector) {
+    static func /=(lhs: inout Vector, rhs: Vector) {
         lhs.dx /= rhs.dx
         lhs.dy /= rhs.dy
     }
-    public static func /(lhs: Vector, rhs: Double) -> Vector {
-        Vector(dx: lhs.dx/rhs, dy: lhs.dy/rhs)
+    static func /(lhs: Vector, rhs: Double) -> Vector {
+        Vector(lhs.dx/rhs, lhs.dy/rhs)
     }
-    public static func /=(lhs: inout Vector, rhs: Double) {
+    static func /=(lhs: inout Vector, rhs: Double) {
         lhs.dx /= rhs
         lhs.dy /= rhs
     }
-    
-    public static prefix func -(vector: Vector) -> Vector {
-        Vector(dx: -vector.dx, dy: -vector.dy)
-    }
-
-    // ----- Conformance ----- //
-    
-    public var description: String {
-        "(dx: \(dx),   dy: \(dy))"
-    }
-    
-    /* ----- TODO -----
-        Codable
-        Hashable
-        Equatable
-    */
 }

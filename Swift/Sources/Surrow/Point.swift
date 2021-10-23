@@ -1,36 +1,31 @@
 //
 //  Point.swift
-//  Collision
+//  PolygonMaster
 //
-//  Created by App Dev on 9/13/21.
+//  Created by Corbin Bigler on 10/22/21.
 //
 
 import Foundation
 
-public class Point: Hashable, Decodable, CustomStringConvertible {
-    // ----- Static ----- //
-    public static var origin: Point {
-        Point(x: 0, y: 0)
+class Point: CustomStringConvertible, Hashable, Codable {
+    // MARK: - Statics
+    static var origin: Point {
+        Point(0, 0)
     }
     
-    // ----- Independent ----- //
-    public var x: Double
-    public var y: Double
+    // MARK: - Indepenants
+    let id = UUID()
+    var x: Double
+    var y: Double
     
-    // ----- Dependent ----- //
     
-    // ----- Initializers ----- //
-    public init(x: Double, y: Double) {
-        self.x = x
-        self.y = y
-    }
-    public init(_ point: Point) {
-        self.x = point.x
-        self.y = point.y
-    }
+    // MARK: - Dependants
+    var vector: Vector { Vector(x, y) }
+    var size: Size { Size(x, y) }
     
-    // ----- Tests ----- //
-    public func rotated(around other: Point = Point.origin, degrees: Double) -> Point {
+    
+    // MARK: - Adjustments
+    func rotated(around other: Point = Point.origin, degrees: Double) -> Point {
         let radians = degrees * (Double.pi/180)
         let s = sin(radians)
         let c = cos(radians)
@@ -44,230 +39,177 @@ public class Point: Hashable, Decodable, CustomStringConvertible {
 
         return point
     }
-        
-    public func cross(_ other: Point) -> Double {
-        x * other.y - y * other.x
-    }
-    public func dot(_ other: Point) -> Double {
-        x * other.x + y * other.y
-    }
-    public func cross(_ other: Vector) -> Double {
-        x * other.dy - y * other.dx
-    }
-    public func dot(_ other: Vector) -> Double {
-        x * other.dx + y * other.dy
-    }
+
     
-    public func closest(on line: Line) -> Point {
-        let perpendicular = Line(slope: line.perpendicular, point: self)
-        return perpendicular.intercects(line: line)!
+    // MARK: - Testing
+    func closest(on line: Line) -> Point {
+        return Line(slope: line.perpendicular, point: self).intercects(line: line)!
     }
-    public func closest(on segment: Segment) -> Point {
-        let intercect = closest(on: segment.line)
-        if intercect.on(segment) {
-            return intercect
+    func closest(on segment: Segment) -> Point {
+        var tests = [segment.p1, segment.p2]
+        let closest = closest(on: segment.line)
+        if closest.fluffy(on: segment) {
+            tests.append(closest)
         }
-        return distance(to: segment.p1) < distance(to: segment.p2) ? segment.p1 : segment.p2
-    }
-    public func closest(on polygon: Polygon) -> Point {
-        let points = polygon.segments.map {closest(on: $0)}
-        return points.sorted { distance(to: $0) < distance(to: $1)}[0]
-    }
-    public func closest(on box: Box) -> Point {
-        let closest = Point.origin
-        if x >= box.right {closest.x = box.right}
-        else if x <= box.left {closest.x = box.left}
-        if y <= box.top {closest.y = box.top}
-        else if y >= box.bottom {closest.y = box.bottom}
-        
-        if x >= box.left && x <= box.right {closest.y = y}
-        else if y >= box.top && y <= box.bottom {closest.x = x}
-        return closest
-    }
-    public func closest(on circle: Circle) -> Point {
-        circle.position + (circle.position.delta(to: self).normal * circle.radius)
-    }
-    public func within(_ box: Box) -> Bool {
-        x >= box.left && x <= box.right && y >= box.top && y <= box.bottom
-    }
-    public func within(_ polygon: Polygon) -> Bool {
-        let test = Segment(p1: self, p2: Point(x: 10000, y: y))
-        return test.intercects(polygon: polygon).count % 2 == 1
-    }
-    public func within(_ circle: Circle) -> Bool {
-        distance(to: circle.position) <= circle.radius
+        return tests.sorted {distance(to: $0) < distance(to: $1)}[0]
     }
     
-    public func on(_ segment: Segment) -> Bool {
-        x >= floor(segment.min.x) && x <= ceil(segment.max.x) &&
-        y >= floor(segment.min.y) && y <= ceil(segment.max.y)
+    func distance(to other: Point) -> Double {
+        sqrt(pow(other.x-x, 2) + pow(other.y-y,2))
     }
-    
-    public func distance(to point: Point) -> Double {
-        sqrt(pow(point.x-x, 2) + pow(point.y-y,2))
-    }
-    public func distance(to line: Line) -> Double {
+    func distance(to line: Line) -> Double {
         distance(to: closest(on: line))
     }
-    public func distance(to segment: Segment) -> Double {
+    func distance(to segment: Segment) -> Double {
         distance(to: closest(on: segment))
     }
-    public func distance(to polygon: Polygon) -> Double {
-        distance(to: closest(on: polygon))
-    }
-    public func distance(to box: Box) -> Double {
-        distance(to: closest(on: box))
-    }
-    public func distance(to circle: Circle) -> Double {
-        distance(to: closest(on: circle))
-    }
     
-    public func delta(to other: Point) -> Vector {
-        Vector(dx: other.x - x, dy: other.y - y)
+    func delta(to other: Point) -> Vector {
+        Vector(other.x - x, other.y - y)
     }
-    public func delta(to line: Line) -> Vector {
+    func delta(to line: Line) -> Vector {
         delta(to: closest(on: line))
     }
-    public func delta(to segment: Segment) -> Vector {
+    func delta(to segment: Segment) -> Vector {
         delta(to: closest(on: segment))
     }
-    public func delta(to polygon: Polygon) -> Vector {
-        delta(to: closest(on: polygon))
-    }
-    public func delta(to box: Box) -> Vector {
-        delta(to: closest(on: box))
-    }
-    public func delta(to circle: Circle) -> Vector {
-        delta(to: closest(on: circle))
-    }
-    
-    // ----- Conversions ----- //
-    public var vector: Vector {
-        Vector(dx: x, dy: y)
-    }
-    
-    // ----- Operators ----- //
-    /* ----- TODO -----
-        Point - = Point
-        Point - = Vector
-        Point - = Float
-        Point / = Point
-        Point / = Vector
-        Point / = Float
-     */
-    public static func +(lhs: Point, rhs: Point) -> Point {
-        Point(x: lhs.x+rhs.x, y: lhs.y+rhs.y)
-    }
-    public static func +=(lhs: inout Point, rhs: Point) {
-        lhs.x += rhs.x
-        lhs.y += rhs.y
-    }
-    public static func +(lhs: Point, rhs: Vector) -> Point {
-        Point(x: lhs.x+rhs.dx, y: lhs.y+rhs.dy)
-    }
-    public static func +=(lhs: inout Point, rhs: Vector) {
-        lhs.x += rhs.dx
-        lhs.y += rhs.dy
-    }
-    public static func +(lhs: Point, rhs: Double) -> Point {
-        Point(x: lhs.x+rhs, y: lhs.y+rhs)
-    }
-    public static func +=(lhs: inout Point, rhs: Double) {
-        lhs.x += rhs
-        lhs.y += rhs
-    }
-    public static func -(lhs: Point, rhs: Point) -> Point {
-        Point(x: lhs.x-rhs.x, y: lhs.y-rhs.y)
-    }
-    public static func -=(lhs: inout Point, rhs: Point) {
-        lhs.x -= rhs.x
-        lhs.y -= rhs.y
-    }
-    public static func -(lhs: Point, rhs: Vector) -> Point {
-        Point(x: lhs.x-rhs.dx, y: lhs.y-rhs.dy)
-    }
-    public static func -=(lhs: inout Point, rhs: Vector) {
-        lhs.x -= rhs.dx
-        lhs.y -= rhs.dy
-    }
-    public static func -(lhs: Point, rhs: Double) -> Point {
-        Point(x: lhs.x-rhs, y: lhs.y-rhs)
-    }
-    public static func -=(lhs: inout Point, rhs: Double) {
-        lhs.x -= rhs
-        lhs.y -= rhs
-    }
-    public static func *(lhs: Point, rhs: Point) -> Point {
-        Point(x: lhs.x*rhs.x, y: lhs.y*rhs.y)
-    }
-    public static func *=(lhs: inout Point, rhs: Point) {
-        lhs.x *= rhs.x
-        lhs.y *= rhs.y
-    }
-    public static func *(lhs: Point, rhs: Vector) -> Point {
-        Point(x: lhs.x*rhs.dx, y: lhs.y*rhs.dy)
-    }
-    public static func *=(lhs: inout Point, rhs: Vector) {
-        lhs.x *= rhs.dx
-        lhs.y *= rhs.dy
-    }
-    public static func *(lhs: Point, rhs: Double) -> Point {
-        Point(x: lhs.x*rhs, y: lhs.y*rhs)
-    }
-    public static func *=(lhs: inout Point, rhs: Double) {
-        lhs.x *= rhs
-        lhs.y *= rhs
-    }
-    public static func /(lhs: Point, rhs: Point) -> Point {
-        Point(x: lhs.x/rhs.x, y: lhs.y/rhs.y)
-    }
-    public static func /=(lhs: inout Point, rhs: Point) {
-        lhs.x /= rhs.x
-        lhs.y /= rhs.y
-    }
-    public static func /(lhs: Point, rhs: Vector) -> Point {
-        Point(x: lhs.x/rhs.dx, y: lhs.y/rhs.dy)
-    }
-    public static func /=(lhs: inout Point, rhs: Vector) {
-        lhs.x /= rhs.dx
-        lhs.y /= rhs.dy
-    }
-    public static func /(lhs: Point, rhs: Double) -> Point {
-        Point(x: lhs.x/rhs, y: lhs.y/rhs)
-    }
-    public static func /=(lhs: inout Point, rhs: Double) {
-        lhs.x /= rhs
-        lhs.y /= rhs
-    }
 
-    public static prefix func -(point: Point) -> Point {
-        Point(x: -point.x, y: -point.y)
+    func within(_ circle: Circle) -> Bool {
+        distance(to: circle.position) <= circle.radius
+    }
+    func within(_ box: Box) -> Bool {
+        x >= box.left && x <= box.right && y >= box.top && y <= box.bottom
     }
     
-    // ----- Conformance ----- //
-    public var description: String {
-        "(x: \(x),   y: \(y))"
+    func fluffy(on segment: Segment) -> Bool{
+        func ru(_ value: Double) -> Double {
+            ceil(value * 1000) / 1000.0
+        }
+        func rd(_ value: Double) -> Double {
+            floor(value * 1000) / 1000.0
+        }
+        return x >= rd(segment.min.dx) && x <= ru(segment.max.dx) && y >= rd(segment.min.dy) && y <= ru(segment.max.dy)
     }
     
+    
+    // MARK: - Initializers
+    init(_ x: Double, _ y: Double) {
+        self.x = x
+        self.y = y
+    }
+    init(_ point: Point) {
+        self.x = point.x
+        self.y = point.y
+    }
+    
+    
+    // MARK: - Conformance
+    // ----- CustomStringConvertible ----- //
+    var description: String {
+        "Point(x: \(x), y: \(y))"
+    }
+    // ----- Hashable ----- //
+    static func == (lhs: Point, rhs: Point) -> Bool {
+        lhs.x == rhs.x && lhs.y == rhs.y
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    // ----- Codable ----- //
     private enum CodingKeys: String, CodingKey {
         case x
         case y
     }
-    required public init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.x = try container.decode(Double.self, forKey: .x)
         self.y = try container.decode(Double.self, forKey: .y)
     }
-    public static func == (lhs: Point, rhs: Point) -> Bool {
-        lhs.x == rhs.x && lhs.y == rhs.y
+    
+    
+    // MARK: - Operators
+    static func +(lhs: Point, rhs: Point) -> Point {
+        Point(lhs.x+rhs.x, lhs.y+rhs.y)
     }
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine("x\(x)y\(y)")
+    static func +=(lhs: inout Point, rhs: Point) {
+        lhs.x += rhs.x
+        lhs.y += rhs.y
     }
-
-
-    /* ----- TODO -----
-        Codable
-        Equatable
-    */
+    static func +(lhs: Point, rhs: Vector) -> Point {
+        Point(lhs.x+rhs.dx, lhs.y+rhs.dy)
+    }
+    static func +=(lhs: inout Point, rhs: Vector) {
+        lhs.x += rhs.dx
+        lhs.y += rhs.dy
+    }
+    static func +(lhs: Point, rhs: Double) -> Point {
+        Point(lhs.x+rhs, lhs.y+rhs)
+    }
+    static func +=(lhs: inout Point, rhs: Double) {
+        lhs.x += rhs
+        lhs.y += rhs
+    }
+    static func -(lhs: Point, rhs: Point) -> Point {
+        Point(lhs.x-rhs.x, lhs.y-rhs.y)
+    }
+    static func -=(lhs: inout Point, rhs: Point) {
+        lhs.x -= rhs.x
+        lhs.y -= rhs.y
+    }
+    static func -(lhs: Point, rhs: Vector) -> Point {
+        Point(lhs.x-rhs.dx, lhs.y-rhs.dy)
+    }
+    static func -=(lhs: inout Point, rhs: Vector) {
+        lhs.x -= rhs.dx
+        lhs.y -= rhs.dy
+    }
+    static func -(lhs: Point, rhs: Double) -> Point {
+        Point(lhs.x-rhs, lhs.y-rhs)
+    }
+    static func -=(lhs: inout Point, rhs: Double) {
+        lhs.x -= rhs
+        lhs.y -= rhs
+    }
+    static func *(lhs: Point, rhs: Point) -> Point {
+        Point(lhs.x*rhs.x, lhs.y*rhs.y)
+    }
+    static func *=(lhs: inout Point, rhs: Point) {
+        lhs.x *= rhs.x
+        lhs.y *= rhs.y
+    }
+    static func *(lhs: Point, rhs: Vector) -> Point {
+        Point(lhs.x*rhs.dx, lhs.y*rhs.dy)
+    }
+    static func *=(lhs: inout Point, rhs: Vector) {
+        lhs.x *= rhs.dx
+        lhs.y *= rhs.dy
+    }
+    static func *(lhs: Point, rhs: Double) -> Point {
+        Point(lhs.x*rhs, lhs.y*rhs)
+    }
+    static func *=(lhs: inout Point, rhs: Double) {
+        lhs.x *= rhs
+        lhs.y *= rhs
+    }
+    static func /(lhs: Point, rhs: Point) -> Point {
+        Point(lhs.x/rhs.x, lhs.y/rhs.y)
+    }
+    static func /=(lhs: inout Point, rhs: Point) {
+        lhs.x /= rhs.x
+        lhs.y /= rhs.y
+    }
+    static func /(lhs: Point, rhs: Vector) -> Point {
+        Point(lhs.x/rhs.dx, lhs.y/rhs.dy)
+    }
+    static func /=(lhs: inout Point, rhs: Vector) {
+        lhs.x /= rhs.dx
+        lhs.y /= rhs.dy
+    }
+    static func /(lhs: Point, rhs: Double) -> Point {
+        Point(lhs.x/rhs, lhs.y/rhs)
+    }
+    static func /=(lhs: inout Point, rhs: Double) {
+        lhs.x /= rhs
+        lhs.y /= rhs
+    }
 }

@@ -1,71 +1,72 @@
 //
 //  Size.swift
-//  Collision
+//  PolygonMaster
 //
-//  Created by App Dev on 9/13/21.
+//  Created by Corbin Bigler on 10/22/21.
 //
 
 import Foundation
 
-public class Size: Hashable, Decodable, CustomStringConvertible {
-    // ----- Static ----- //
-    public static var zero: Size {
-        Size(width: 0, height: 0)
+class Size: CustomStringConvertible, Hashable, Codable {
+    // MARK: - Statics
+    static var zero: Size {
+        Size(0, 0)
+    }
+    static var unit: Size {
+        Size(1, 1)
     }
     
-    // ----- Independent ----- //
-    public var width: Double
-    public var height: Double
+    // MARK: - Indepenants
+    let id = UUID()
+    var width: Double
+    var height: Double
     
-    // ----- Dependent ----- //
-    public var hWidth: Double {
-        width / 2
-    }
-    public var hHeight: Double {
-        height / 2
-    }
     
-    // ----- Initializers ----- //
-    public init(width: Double, height: Double) {
+    // MARK: - Dependants
+    var point: Point { Point(width, height) }
+    var vector: Vector { Vector(width, height) }
+    
+    
+    // MARK: - Adjustments
+    
+    
+    // MARK: - Testing
+    
+    
+    // MARK: - Initializers
+    init(_ width: Double, _ height: Double) {
         self.width = width
         self.height = height
     }
-    
-    // ----- Tests ----- //
-    
-    // ----- Operators ----- //
-    /* ----- TODO -----
-        size + = Float
-        size - = Float
-        size * = Float
-        size / = Float
-    */
-    public static func *(lhs: Size, rhs: Double) -> Size {
-        Size(width: lhs.width * rhs, height: lhs.height * rhs)
+    init(_ size: Size) {
+        self.width = size.width
+        self.height = size.height
     }
     
-    // ----- Conformance ----- //
-    /* ----- TODO -----
-        Codable
-        Equatable
-    */
-    public var description: String {
-        "(width: \(width),   height: \(height))"
-    }
     
+    // MARK: - Conformance
+    // ----- CustomStringConvertible ----- //
+    var description: String {
+        "Size(width: \(width), height: \(height))"
+    }
+    // ----- Hashable ----- //
+    static func == (lhs: Size, rhs: Size) -> Bool {
+        lhs.width == rhs.width && lhs.height == rhs.height
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    // ----- Codable ----- //
     private enum CodingKeys: String, CodingKey {
         case width
         case height
     }
-    required public init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.width = try container.decode(Double.self, forKey: .width)
         self.height = try container.decode(Double.self, forKey: .height)
     }
-    public static func == (lhs: Size, rhs: Size) -> Bool {
-        lhs.width == rhs.width && lhs.height == rhs.height
-    }
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine("w\(width)h\(height)")
-    }
+    
+    
+    // MARK: - Operators
 }

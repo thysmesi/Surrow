@@ -1,130 +1,74 @@
 //
 //  Box.swift
-//  Conquerors
+//  PolygonMaster
 //
-//  Created by App Dev on 9/14/21.
+//  Created by Corbin Bigler on 10/22/21.
 //
 
 import Foundation
 
-public class Box: CustomStringConvertible {
-    // ----- Static ----- //
-    public var unit: Box {
-        Box(x: 0, y: 0, width: 1, height: 1)
+class Box: CustomStringConvertible, Hashable, Codable {
+    // MARK: - Statics
+    static var zero: Box {
+        Box(position: Point.origin, size: Size.zero)
+    }
+    static var unit: Box {
+        Box(position: Point.origin, size: Size.unit)
     }
     
-    // ----- Independent ----- //
-    public var position: Point
-    public var size: Size
+    // MARK: - Indepenants
+    let id = UUID()
+    var position: Point
+    var size: Size
     
-    // ----- Dependent ----- //
-    public var left: Double {
-        position.x - (size.width / 2)
-    }
-    public var right: Double {
-        position.x + (size.width / 2)
-    }
-    public var top: Double {
-        position.y - (size.height / 2)
-    }
-    public var bottom: Double {
-        position.y + (size.height / 2)
-    }
-        
-    // ----- Initializers ----- //
-    public init(position: Point, size: Size) {
+    
+    // MARK: - Dependants
+    var left: Double { position.x }
+    var right: Double { position.x + size.width }
+    var top: Double { position.y }
+    var bottom: Double { position.y + size.height}
+    
+    
+    // MARK: - Adjustments
+    
+    
+    // MARK: - Testing
+    
+    
+    // MARK: - Initializers
+    init(position: Point, size: Size) {
         self.position = position
         self.size = size
     }
-    public init(x: Double, y: Double, width: Double, height: Double) {
-        self.position = Point(x:x, y: y)
-        self.size = Size(width: width, height: height)
+    init(_ box: Box) {
+        self.position = box.position
+        self.size = box.size
     }
     
-    // ----- Tests ----- //
-    public func collides(with segment: Segment) -> Vector? {
-        return nil
+    
+    // MARK: - Conformance
+    // ----- CustomStringConvertible ----- //
+    var description: String {
+        "Box(position: \(position), size: \(size))"
     }
-    public func collides(with box: Box) -> Vector? {
-        let vX = right - box.right
-        let vY = bottom - box.bottom
-        let hWidths = (size.width/2) + (box.size.width / 2)
-        let hHeights = (size.height/2) + (box.size.height / 2)
-        var vector: Vector? = nil
-        
-        if abs(vX) < hWidths && abs(vY) < hHeights {
-            let oX = hWidths - abs(vX)
-            let oY = hHeights - abs(vY)
-            if oX >= oY {
-                if vY > 0 {
-                    vector = Vector(dx: 0, dy: oY)
-                } else {
-                    vector = Vector(dx: 0, dy: -oY)
-                }
-            } else {
-                if vX > 0 {
-                    vector = Vector(dx: oX, dy: 0)
-                } else {
-                    vector = Vector(dx: -oX, dy: 0)
-                }
-            }
-        }
-        
-        return vector
+    // ----- Hashable ----- //
+    static func == (lhs: Box, rhs: Box) -> Bool {
+        lhs.position == rhs.position && lhs.size == rhs.size
     }
-    public func collides(with circle: Circle) -> Vector? {
-        // ----- source: https://stackoverflow.com/questions/401847/circle-rectangle-collision-detection-intersection
-        
-        let delta = circle.position.delta(to: position)
-        
-        let hWidth = size.width / 2
-        let hHeight = size.height / 2
-        
-        if delta.dx > (hWidth + circle.radius) || delta.dy > (hHeight + circle.radius) { return nil }
-        
-        var pointVector: Vector = Vector.zero
-        for point in polygon.points {
-            if point.within(circle) {
-                let vector = circle.position.delta(to: point)
-                pointVector = vector.normal * (circle.radius - vector.length)
-            }
-        }
-        
-        var linearVector: Vector = Vector.zero
-        let horizontal = Vector(dx: hWidth + circle.radius - delta.dx, dy: 0)
-        let vertical = Vector(dx: 0, dy: hHeight + circle.radius - delta.dy)
-        linearVector = horizontal.length < vertical.length ? horizontal : vertical
-        
-        return pointVector.length < linearVector.length ? pointVector : linearVector
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
-    public func collides(with polygon: Polygon) -> Vector? {
-        self.polygon.collides(with: polygon)
+    // ----- Codable ----- //
+    private enum CodingKeys: String, CodingKey {
+        case position
+        case size
+    }
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.position = try container.decode(Point.self, forKey: .position)
+        self.size = try container.decode(Size.self, forKey: .size)
     }
     
-    // ----- Conversions ----- //
-    public var polygon: Polygon {
-        Polygon(relatives: [Point(x: -(size.width / 2), y: -(size.height / 2)), Point(x: (size.width / 2), y: -(size.height / 2)), Point(x: (size.width / 2), y: (size.height / 2)), Point(x: -(size.width / 2), y: (size.height / 2))], position: position)
-    }
     
-    // ----- Operators ----- //
-    /* ----- TODO -----
-        Box *= Float
-        Box / = Float
-    */
-    public static func *(lhs: Box, rhs: Double) -> Box {
-        Box(position: lhs.position, size: lhs.size * rhs)
-    }
-    
-    // ----- Conformance ----- //
-    public var description: String {
-        "x: \(position.x), y: \(position.y), width: \(size.width), height: \(size.height)"
-    }
-    
-    /* ----- TODO -----
-        Codable
-        Hashable
-        Equatable
-        CustomStringConvertible    
-    */
-    public var bounding: Box { self }
+    // MARK: - Operators
 }

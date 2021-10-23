@@ -1,136 +1,109 @@
 //
 //  Line.swift
-//  Conquerors
+//  PolygonMaster
 //
-//  Created by Corbin Bigler on 9/14/21.
+//  Created by Corbin Bigler on 10/23/21.
 //
 
 import Foundation
-import SwiftUI
 
-public class Line {
-    // ----- Static ----- //
+class Line: CustomStringConvertible, Hashable, Codable {
+    // MARK: - Statics
     
-    // ----- Independent ----- //
-    public var p1: Point
-    public var p2: Point
     
-    // ----- Dependent ----- //
-    public var slope: Double {
+    // MARK: - Indepenants
+    let id = UUID()
+    var p1: Point
+    var p2: Point
+    
+    
+    // MARK: - Dependants
+    var slope: Double {
         (p2.y - p1.y) / (p2.x - p1.x)
     }
-    public var perpendicular: Double {
+    var perpendicular: Double {
         1 / -slope
     }
-    public var yIntercept: Double {
+    var yIntercept: Double {
         y(0)
     }
-    public var xIntercept: Double {
+    var xIntercept: Double {
         x(0)
     }
     
-    // ----- Initializers ----- //
-    public init(p1: Point, p2: Point) {
-        self.p1 = p1
-        self.p2 = p2
-    }
-    public init(slope: Double, point: Point) {
-        self.p1 = point
-        self.p2 = Point(x: point.x + 1, y: point.y + slope)
-    }
-    public init(slope: Double, yIntercept: Double) {
-        self.p1 = Point(x: 0, y: yIntercept)
-        self.p2 = Point(x: 1, y: slope + yIntercept)
-    }
     
-    // ----- Tests ----- //
-    public func y(_ x: Double) -> Double {
+    // MARK: - Adjustments
+    
+    
+    // MARK: - Testing
+    func y(_ x: Double) -> Double {
         (slope*x) - (slope*p1.x) + p1.y
     }
-    public func x(_ y: Double) -> Double {
+    func x(_ y: Double) -> Double {
         (y/slope) - (p1.y/slope) + p1.x
     }
-
-    public func intercects(segment: Segment) -> Point?{
-        let intercect = intercects(line: segment.line)
-        if let intercect = intercect {
-            if intercect.on(segment) {
-                return intercect
-            }
-        }
-        return nil
-    }
-    public func intercects(line other: Line) -> Point?{
-        
+    
+    func intercects(line other: Line) -> Point?{
         if slope == other.slope {
             return nil
         }
     
         if yIntercept.isNaN {
-            return Point(x: p1.x, y: other.y(p1.x))
+            return Point(p1.x, other.y(p1.x))
         }
         if other.yIntercept.isNaN {
-            return Point(x: other.p1.x, y: y(other.p1.x))
+            return Point(other.p1.x, y(other.p1.x))
         }
         
         let x = (other.yIntercept - yIntercept) / (slope - other.slope)
         let y = slope * x + yIntercept
         
-        return Point(x: x, y: y)
-    }
-    public func intercects(polygon: Polygon) -> [Point] {
-        var intercections: [Point] = []
-        for segment in polygon.segments {
-            if let intercect = intercects(segment: segment) {
-                intercections.append(intercect)
-            }
-        }
-        return intercections
-    }
-    public func intercects(box: Box) -> [Point] {
-        intercects(polygon: box.polygon)
-    }
-    public func intercects(circle: Circle) -> [Point] {
-        let aprim = (1 + pow(slope,2))
-        let bprim = 2 * slope * (yIntercept - circle.position.y) - 2 * circle.position.x
-        let cprim = pow(circle.position.x,2) + pow((yIntercept - circle.position.y),2) - pow(circle.radius, 2)
-        
-        let delta = pow(bprim, 2) - 4 * aprim * cprim
-        
-        let x1 = (-bprim + sqrt(delta)) / (2 * aprim)
-        let x2 = (-bprim - sqrt(delta)) / (2 * aprim)
-        
-        var intercections: [Point] = []
-        if x1.isFinite {
-            intercections.append(Point(x: x1, y: y(x1)))
-        }
-        if x2.isFinite {
-            intercections.append(Point(x: x2, y: y(x2)))
-        }
-        return intercections
+        return Point(x, y)
     }
     
-    // ----- Operators ----- //
-    /* ----- TODO -----
-        Line + = Point
-        Line + = Vector
-        Line + = Float
-        Line - = Point
-        Line - = Vector
-        Line - = Float
-        Line * = Point
-        Line * = Vector
-        Line * = Float
-        Line / = Point
-        Line / = Vector
-        Line / = Float
-    */
     
-    // ----- Conformance ----- //
-    /* ----- TODO -----
-        Codable
-        Hashable
-        Equatable
-        CustomStringConvertible
-    */
+    // MARK: - Initializers
+    init(p1: Point, p2: Point) {
+        self.p1 = p1
+        self.p2 = p2
+    }
+    init(slope: Double, point: Point) {
+        self.p1 = point
+        self.p2 = Point(point.x + 1, point.y + slope)
+    }
+    init(slope: Double, yIntercept: Double) {
+        self.p1 = Point(0, yIntercept)
+        self.p2 = Point(1, slope + yIntercept)
+    }
+    init(_ line: Line) {
+        self.p1 = line.p1
+        self.p2 = line.p2
+    }
+    
+    
+    // MARK: - Conformance
+    // ----- CustomStringConvertible ----- //
+    var description: String {
+        "Line(p1: \(p1), p2: \(p2))"
+    }
+    // ----- Hashable ----- //
+    static func == (lhs: Line, rhs: Line) -> Bool {
+        lhs.p1 == rhs.p1 && lhs.p2 == rhs.p2
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    // ----- Codable ----- //
+    private enum CodingKeys: String, CodingKey {
+        case p1
+        case p2
+    }
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.p1 = try container.decode(Point.self, forKey: .p1)
+        self.p2 = try container.decode(Point.self, forKey: .p2)
+    }
+    
+    
+    // MARK: - Operators
 }
