@@ -7,6 +7,7 @@
 
 import Foundation
 
+@available(macOS 10.15, *)
 class Box: CustomStringConvertible, Hashable, Codable {
     // MARK: - Statics
     static var zero: Box {

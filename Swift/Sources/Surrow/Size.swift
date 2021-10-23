@@ -7,7 +7,8 @@
 
 import Foundation
 
-class Size: CustomStringConvertible, Hashable, Codable {
+@available(macOS 10.15, *)
+struct Size: CustomStringConvertible, Hashable, Codable {
     // MARK: - Statics
     static var zero: Size {
         Size(0, 0)
@@ -61,7 +62,7 @@ class Size: CustomStringConvertible, Hashable, Codable {
         case width
         case height
     }
-    required init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.width = try container.decode(Double.self, forKey: .width)
         self.height = try container.decode(Double.self, forKey: .height)

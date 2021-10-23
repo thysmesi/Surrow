@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import Combine
 
+@available(macOS 10.15, *)
 class Polygon: CustomStringConvertible, Hashable, Codable {
     // MARK: - Statics
     class Vertex: CustomStringConvertible, Hashable, Codable {
@@ -96,7 +98,9 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
     
     // MARK: - Indepenants
     let id = UUID()
-    var points: [Point]
+    @Published var points: [Point]
+    var observer: AnyCancellable = AnyCancellable {}
+    
     
     
     // MARK: - Dependants
@@ -143,9 +147,17 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
     // MARK: - Initializers
     init(points: [Point]) {
         self.points = points
+        self.observer = $points
+            .sink() { _ in
+                print("changed: \(self.points.count)")
+            }
     }
     init(_ polygon: Polygon) {
         self.points = polygon.points
+        self.observer = $points
+            .sink() { _ in
+                print("changed: \(self.points.count)")
+            }
     }
     
     
@@ -168,6 +180,10 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.points = try container.decode([Point].self, forKey: .points)
+    }
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(points, forKey: .points)
     }
     
     

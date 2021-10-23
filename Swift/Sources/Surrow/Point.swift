@@ -7,7 +7,8 @@
 
 import Foundation
 
-class Point: CustomStringConvertible, Hashable, Codable {
+@available(macOS 10.15, *)
+struct Point: CustomStringConvertible, Hashable, Codable {
     // MARK: - Statics
     static var origin: Point {
         Point(0, 0)
@@ -80,6 +81,9 @@ class Point: CustomStringConvertible, Hashable, Codable {
     func within(_ box: Box) -> Bool {
         x >= box.left && x <= box.right && y >= box.top && y <= box.bottom
     }
+    func within(_ polygon: Polygon) -> Bool {
+        return false
+    }
     
     func fluffy(on segment: Segment) -> Bool{
         func ru(_ value: Double) -> Double {
@@ -120,7 +124,7 @@ class Point: CustomStringConvertible, Hashable, Codable {
         case x
         case y
     }
-    required init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.x = try container.decode(Double.self, forKey: .x)
         self.y = try container.decode(Double.self, forKey: .y)

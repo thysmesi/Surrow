@@ -7,7 +7,8 @@
 
 import Foundation
 
-class Vector: CustomStringConvertible, Hashable, Codable {
+@available(macOS 10.15, *)
+struct Vector: CustomStringConvertible, Hashable, Codable {
     // MARK: - Statics
     static var zero: Vector {
         Vector(0, 0)
@@ -85,7 +86,7 @@ class Vector: CustomStringConvertible, Hashable, Codable {
         case dx
         case dy
     }
-    required init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.dx = try container.decode(Double.self, forKey: .dx)
         self.dy = try container.decode(Double.self, forKey: .dy)
