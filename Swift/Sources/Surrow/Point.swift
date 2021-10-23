@@ -44,7 +44,7 @@ struct Point: CustomStringConvertible, Hashable, Codable {
     
     // MARK: - Testing
     func closest(on line: Line) -> Point {
-        return Line(slope: line.perpendicular, point: self).intercects(line: line)!
+        return Line(slope: line.perpendicular, point: self).intercects(line)!
     }
     func closest(on segment: Segment) -> Point {
         var tests = [segment.p1, segment.p2]
@@ -82,6 +82,19 @@ struct Point: CustomStringConvertible, Hashable, Codable {
         x >= box.left && x <= box.right && y >= box.top && y <= box.bottom
     }
     func within(_ polygon: Polygon) -> Bool {
+        func sign(point: Point, segment: Segment) -> Double {
+            (point.x - segment.p2.x) * (segment.p1.y - segment.p2.y) - (segment.p1.x - segment.p2.x) * (point.y - segment.p2.y)
+        }
+        for triangle in polygon.triangles {
+            let d1 = sign(point: self, segment: triangle.sides[0])
+            let d2 = sign(point: self, segment: triangle.sides[1])
+            let d3 = sign(point: self, segment: triangle.sides[2])
+            
+            if !(((d1 < 0) || (d2 < 0) || (d3 < 0)) && ((d1 > 0) || (d2 > 0) || (d3 > 0))) {
+                return true
+            }
+        }
+
         return false
     }
     

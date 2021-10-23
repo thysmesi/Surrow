@@ -25,9 +25,26 @@ class Segment: Line {
     
     
     // MARK: - Testing
+    override func intercects(_ other: Line) -> Point? {
+        super.intercects(self)
+    }
+    override func intercects(_ segment: Segment) -> Point? {
+        let intercect = line.intercects(segment)
+        if let intercect = intercect, intercect.fluffy(on: self) {
+            return intercect
+        }
+        return nil
+    }
+    override func intercects(_ polygon: Polygon) -> [Point] {
+        line.intercects(polygon).filter {$0.fluffy(on: self)}
+    }
+    
     
     
     // MARK: - Initializers
+    override init(p1: Point, p2: Point) {
+        super.init(p1: p1, p2: p2)
+    }
     init(_ segment: Segment) {
         super.init(p1: segment.p1, p2: segment.p2)
     }

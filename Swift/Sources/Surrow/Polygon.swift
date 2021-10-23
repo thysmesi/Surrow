@@ -99,43 +99,66 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
     // MARK: - Indepenants
     let id = UUID()
     @Published var points: [Point]
-    var observer: AnyCancellable = AnyCancellable {}
-    
     
     
     // MARK: - Dependants
     var vertices: [Vertex] {
-        var vertices: [Vertex] = []
-        for point in points {
-            vertices.append(Vertex(position: point))
+        if _vertices == nil {
+            var vertices: [Vertex] = []
+            for point in points {
+                vertices.append(Vertex(position: point))
+            }
+            for index in vertices.indices {
+                vertices[index].last = vertices[index == 0 ? vertices.count-1 : index-1]
+                vertices[index].next = vertices[index == vertices.count-1 ? 0 : index+1]
+            }
+            _vertices = vertices
         }
-        for index in vertices.indices {
-            vertices[index].last = vertices[index == 0 ? vertices.count-1 : index-1]
-            vertices[index].next = vertices[index == vertices.count-1 ? 0 : index+1]
-        }
-        return vertices
+        return _vertices!
     }
+    private var _vertices: [Vertex]? = nil
+    
     var triangles: [Polygon] {
-        var triangles: [Polygon] = []
-        var left = vertices
-        
-        while left.count > 3 {
+        if _triangles == nil {
+            var triangles: [Polygon] = []
+            var left = vertices.map { Vertex($0) }
             for index in left.indices {
-                let vertex = left[index]
-                if vertex.tip {
-                    triangles.append(Polygon(points: [vertex.last.position, vertex.position, vertex.next.position]))
-                    vertex.last.next = vertex.next
-                    vertex.next.last = vertex.last
-                    left.remove(at: index)
-                    let removed = left.removeFirst()
-                    left.append(removed)
-                    break
+                left[index].last = left[index == 0 ? left.count-1 : index-1]
+                left[index].next = left[index == left.count-1 ? 0 : index+1]
+            }
+
+            while left.count > 3 {
+                for index in left.indices {
+                    let vertex = left[index]
+                    if vertex.tip {
+                        triangles.append(Polygon(points: [vertex.last.position, vertex.position, vertex.next.position]))
+                        vertex.last.next = vertex.next
+                        vertex.next.last = vertex.last
+                        left.remove(at: index)
+                        let removed = left.removeFirst()
+                        left.append(removed)
+                        break
+                    }
                 }
             }
+            triangles.append(Polygon(points: [left[0].position, left[1].position, left[2].position]))
+            _triangles = triangles
         }
-        triangles.append(Polygon(points: [left[0].position, left[1].position, left[2].position]))
-        return triangles
+        return _triangles!
     }
+    private var _triangles: [Polygon]?
+    
+    var sides: [Segment] {
+        if _sides == nil {
+            var segments: [Segment] = []
+            for vertex in vertices {
+                segments.append(Segment(p1: vertex.position, p2: vertex.next.position))
+            }
+            _sides = segments
+        }
+        return _sides!
+    }
+    private var _sides: [Segment]? = nil
     
     
     // MARK: - Adjustments
@@ -147,16 +170,17 @@ class Polygon: CustomStringConvertible, Hashable, Codable {
     // MARK: - Initializers
     init(points: [Point]) {
         self.points = points
-        self.observer = $points
-            .sink() { _ in
-                print("changed: \(self.points.count)")
-            }
+        createObserver()
     }
     init(_ polygon: Polygon) {
         self.points = polygon.points
-        self.observer = $points
-            .sink() { _ in
-                print("changed: \(self.points.count)")
+        createObserver()
+    }
+    private func createObserver(){
+        _ = $points
+            .sink() { [self] _ in
+                _vertices = nil
+                _triangles = nil
             }
     }
     

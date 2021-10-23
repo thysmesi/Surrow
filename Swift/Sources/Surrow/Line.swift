@@ -44,7 +44,7 @@ class Line: CustomStringConvertible, Hashable, Codable {
         (y/slope) - (p1.y/slope) + p1.x
     }
     
-    func intercects(line other: Line) -> Point?{
+    func intercects(_ other: Line) -> Point?{
         if slope == other.slope {
             return nil
         }
@@ -61,7 +61,22 @@ class Line: CustomStringConvertible, Hashable, Codable {
         
         return Point(x, y)
     }
-    
+    func intercects(_ segment: Segment) -> Point?{
+        let intercect = intercects(segment.line)
+        if let intercect = intercect, intercect.fluffy(on: segment) {
+            return intercect
+        }
+        return nil
+    }
+    func intercects(_ polygon: Polygon) -> [Point] {
+        var output: [Point] = []
+        for segment in polygon.sides {
+            if let intercect = intercects(segment) {
+                output.append(intercect)
+            }
+        }
+        return output
+    }
     
     // MARK: - Initializers
     init(p1: Point, p2: Point) {
