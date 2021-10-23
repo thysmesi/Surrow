@@ -9,14 +9,14 @@ import SwiftUI
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-extension CGPoint {
+public extension CGPoint {
     init(_ point: Point) {
         self.init(x: point.x, y: point.y)
     }
 }
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-extension Path {
+public extension Path {
     mutating func move(to point: Point) {
         move(to: CGPoint(point))
     }
@@ -26,7 +26,7 @@ extension Path {
 }
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-extension View {
+public extension View {
     func position(_ point: Point) -> some View {
         position(x: point.x, y: point.y)
     }
