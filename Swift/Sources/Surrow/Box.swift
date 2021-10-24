@@ -33,10 +33,10 @@ public class Box: CustomStringConvertible, Hashable, Codable {
     public var polygon: Polygon {
         if _polygon == nil {
             _polygon = Polygon(points: [
-                position,
-                position + Vector(size.width, 0),
-                position + size,
-                position + Vector(0, size.height)
+                position - Vector(size.width/2, 0),
+                position + Vector(size.width/2, 0),
+                position - Vector(0, size.height/2),
+                position + Vector(0, size.height/2)
             ])
         }
         return _polygon!
