@@ -173,6 +173,22 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     }
     private var _center: Point? = nil
     
+    public var bounding: Box {
+        if _bounding == nil {
+            var min = points[0]
+            var max = points[0]
+            for point in points {
+                min.x = Swift.min(min.x, point.x)
+                max.x = Swift.max(max.x, point.x)
+                min.y = Swift.min(min.y, point.y)
+                max.y = Swift.max(max.y, point.y)
+            }
+            _bounding = Box(position: min, size: (max - min).size)
+        }
+        return _bounding!
+    }
+    private var _bounding: Box? = nil
+    
     
     // MARK: - Adjustments
     
