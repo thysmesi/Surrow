@@ -7,15 +7,16 @@
 
 import Foundation
 
-let π = Double.pi
+public let π = Double.pi
 
-extension Double {
+public extension Double {
     var toDegrees: Double {
         self * (180 / π)
     }
     var toRadians: Double {
         self * (π / 180)
     }
+    
     var degreesSimplified: Double {
         (self.truncatingRemainder(dividingBy: 360) + 360).truncatingRemainder(dividingBy: 360)
     }

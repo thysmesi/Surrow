@@ -20,8 +20,8 @@ public class Box: CustomStringConvertible, Hashable, Codable {
     
     // MARK: - Indepenants
     public let id = UUID()
-    public var position: Point
-    public var size: Size
+    @Published public var position: Point
+    @Published public var size: Size
     
     
     // MARK: - Dependants
@@ -29,6 +29,19 @@ public class Box: CustomStringConvertible, Hashable, Codable {
     public var right: Double { position.x + size.width }
     public var top: Double { position.y }
     public var bottom: Double { position.y + size.height}
+    
+    public var polygon: Polygon {
+        if _polygon == nil {
+            _polygon = Polygon(points: [
+                position,
+                position + Vector(size.width, 0),
+                position + size,
+                position + Vector(0, size.height)
+            ])
+        }
+        return _polygon!
+    }
+    private var _polygon: Polygon?
     
     
     // MARK: - Adjustments
@@ -46,7 +59,19 @@ public class Box: CustomStringConvertible, Hashable, Codable {
         self.position = box.position
         self.size = box.size
     }
-    
+    private func createObserver(){
+        func reset(){
+            _polygon = nil
+        }
+        _ = $position
+            .sink() { _ in
+                reset()
+            }
+        _ = $size
+            .sink() { _ in
+                reset()
+            }
+    }
     
     // MARK: - Conformance
     // ----- CustomStringConvertible ----- //
@@ -69,6 +94,11 @@ public class Box: CustomStringConvertible, Hashable, Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.position = try container.decode(Point.self, forKey: .position)
         self.size = try container.decode(Size.self, forKey: .size)
+    }
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(position, forKey: .position)
+        try container.encode(size, forKey: .size)
     }
     
     
