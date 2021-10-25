@@ -27,8 +27,8 @@ public struct Size: CustomStringConvertible, Hashable, Codable {
     // MARK: - Dependants
     public var point: Point { Point(width, height) }
     public var vector: Vector { Vector(width, height) }
-    public var min: { Swift.min(width, height) }
-    public var max: { Swift.max(width, height) }
+    public var min: Double { Swift.min(width, height) }
+    public var max: Double { Swift.max(width, height) }
     
     // MARK: - Adjustments
     
