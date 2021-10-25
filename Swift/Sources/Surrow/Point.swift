@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import simd
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
@@ -118,6 +119,14 @@ public struct Point: CustomStringConvertible, Hashable, Codable {
     public init(_ point: Point) {
         self.x = point.x
         self.y = point.y
+    }
+    public init(_ simd: SIMD2<Float>) {
+        self.x = Double(simd.x)
+        self.y = Double(simd.y)
+    }
+    public init(_ simd: SIMD2<Double>) {
+        self.x = simd.x
+        self.y = simd.y
     }
     
     
