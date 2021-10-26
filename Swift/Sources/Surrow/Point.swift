@@ -197,6 +197,13 @@ public struct Point: CustomStringConvertible, Hashable, Codable {
         lhs.x -= rhs.dx
         lhs.y -= rhs.dy
     }
+    public static func -(lhs: Point, rhs: Size) -> Point {
+        Point(lhs.x-rhs.width, lhs.y-rhs.height)
+    }
+    public static func -=(lhs: inout Point, rhs: Size) {
+        lhs.x -= rhs.width
+        lhs.y -= rhs.height
+    }
     public static func -(lhs: Point, rhs: Double) -> Point {
         Point(lhs.x-rhs, lhs.y-rhs)
     }
