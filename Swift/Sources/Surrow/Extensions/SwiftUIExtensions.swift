@@ -16,6 +16,13 @@ public extension CGPoint {
 }
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
+public extension CGVector {
+    init(_ vector: Vector) {
+        self.init(dx: vector.dx, dy: vector.dy)
+    }
+}
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
 public extension Path {
     mutating func move(to point: Point) {
         move(to: CGPoint(point))
