@@ -179,4 +179,8 @@ public struct Vector: CustomStringConvertible, Hashable, Codable {
         lhs.dx /= rhs
         lhs.dy /= rhs
     }
+    
+    static prefix func -(_ vector: Vector) -> Vector {
+        return Vector(-vector.dx, -vector.dy)
+    }
 }

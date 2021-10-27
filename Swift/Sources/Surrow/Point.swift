@@ -260,4 +260,8 @@ public struct Point: CustomStringConvertible, Hashable, Codable {
         lhs.x /= rhs
         lhs.y /= rhs
     }
+    
+    static prefix func -(_ point: Point) -> Point {
+        return Point(-point.x, -point.y)
+    }
 }
