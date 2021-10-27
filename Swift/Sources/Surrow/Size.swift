@@ -76,7 +76,7 @@ public struct Size: CustomStringConvertible, Hashable, Codable {
         Size(lhs.width/rhs, lhs.height/rhs)
     }
     
-    static prefix func -(_ size: Size) -> Size {
+    static prefix func -(size: Size) -> Size {
         return Size(-size.width, -size.height)
     }
 }
