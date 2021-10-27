@@ -69,14 +69,13 @@ public struct Size: CustomStringConvertible, Hashable, Codable {
         self.width = try container.decode(Double.self, forKey: .width)
         self.height = try container.decode(Double.self, forKey: .height)
     }
-    
-    
-    // MARK: - Operators
-    public static func /(lhs: Size, rhs: Double) -> Size {
-        Size(lhs.width/rhs, lhs.height/rhs)
+    // ----- v2D ----- //
+    public var vx: Double {
+        get { width }
+        set(vx) { width = vx }
     }
-    
-    static prefix func -(size: Size) -> Size {
-        return Size(-size.width, -size.height)
+    public var vy: Double {
+        get { height }
+        set(vy) { height = vy }
     }
 }

@@ -152,116 +152,13 @@ public struct Point: CustomStringConvertible, Hashable, Codable {
         self.x = try container.decode(Double.self, forKey: .x)
         self.y = try container.decode(Double.self, forKey: .y)
     }
-    
-    
-    // MARK: - Operators
-    public static func +(lhs: Point, rhs: Point) -> Point {
-        Point(lhs.x+rhs.x, lhs.y+rhs.y)
+    // ----- v2D ----- //
+    public var vx: Double {
+        get { x }
+        set(vx) { x = vx }
     }
-    public static func +=(lhs: inout Point, rhs: Point) {
-        lhs.x += rhs.x
-        lhs.y += rhs.y
-    }
-    public static func +(lhs: Point, rhs: Vector) -> Point {
-        Point(lhs.x+rhs.dx, lhs.y+rhs.dy)
-    }
-    public static func +=(lhs: inout Point, rhs: Vector) {
-        lhs.x += rhs.dx
-        lhs.y += rhs.dy
-    }
-    public static func +(lhs: Point, rhs: Size) -> Point {
-        Point(lhs.x+rhs.width, lhs.y+rhs.height)
-    }
-    public static func +=(lhs: inout Point, rhs: Size) {
-        lhs.x += rhs.width
-        lhs.y += rhs.height
-    }
-    public static func +(lhs: Point, rhs: Double) -> Point {
-        Point(lhs.x+rhs, lhs.y+rhs)
-    }
-    public static func +=(lhs: inout Point, rhs: Double) {
-        lhs.x += rhs
-        lhs.y += rhs
-    }
-    public static func -(lhs: Point, rhs: Point) -> Point {
-        Point(lhs.x-rhs.x, lhs.y-rhs.y)
-    }
-    public static func -=(lhs: inout Point, rhs: Point) {
-        lhs.x -= rhs.x
-        lhs.y -= rhs.y
-    }
-    public static func -(lhs: Point, rhs: Vector) -> Point {
-        Point(lhs.x-rhs.dx, lhs.y-rhs.dy)
-    }
-    public static func -=(lhs: inout Point, rhs: Vector) {
-        lhs.x -= rhs.dx
-        lhs.y -= rhs.dy
-    }
-    public static func -(lhs: Point, rhs: Size) -> Point {
-        Point(lhs.x-rhs.width, lhs.y-rhs.height)
-    }
-    public static func -=(lhs: inout Point, rhs: Size) {
-        lhs.x -= rhs.width
-        lhs.y -= rhs.height
-    }
-    public static func -(lhs: Point, rhs: Double) -> Point {
-        Point(lhs.x-rhs, lhs.y-rhs)
-    }
-    public static func -=(lhs: inout Point, rhs: Double) {
-        lhs.x -= rhs
-        lhs.y -= rhs
-    }
-    public static func *(lhs: Point, rhs: Point) -> Point {
-        Point(lhs.x*rhs.x, lhs.y*rhs.y)
-    }
-    public static func *=(lhs: inout Point, rhs: Point) {
-        lhs.x *= rhs.x
-        lhs.y *= rhs.y
-    }
-    public static func *(lhs: Point, rhs: Vector) -> Point {
-        Point(lhs.x*rhs.dx, lhs.y*rhs.dy)
-    }
-    public static func *=(lhs: inout Point, rhs: Vector) {
-        lhs.x *= rhs.dx
-        lhs.y *= rhs.dy
-    }
-    public static func *(lhs: Point, rhs: Double) -> Point {
-        Point(lhs.x*rhs, lhs.y*rhs)
-    }
-    public static func *=(lhs: inout Point, rhs: Double) {
-        lhs.x *= rhs
-        lhs.y *= rhs
-    }
-    public static func /(lhs: Point, rhs: Point) -> Point {
-        Point(lhs.x/rhs.x, lhs.y/rhs.y)
-    }
-    public static func /=(lhs: inout Point, rhs: Point) {
-        lhs.x /= rhs.x
-        lhs.y /= rhs.y
-    }
-    public static func /(lhs: Point, rhs: Vector) -> Point {
-        Point(lhs.x/rhs.dx, lhs.y/rhs.dy)
-    }
-    public static func /=(lhs: inout Point, rhs: Vector) {
-        lhs.x /= rhs.dx
-        lhs.y /= rhs.dy
-    }
-    public static func /(lhs: Point, rhs: Size) -> Point {
-        Point(lhs.x/rhs.width, lhs.y/rhs.height)
-    }
-    public static func /=(lhs: inout Point, rhs: Size) {
-        lhs.x /= rhs.width
-        lhs.y /= rhs.height
-    }
-    public static func /(lhs: Point, rhs: Double) -> Point {
-        Point(lhs.x/rhs, lhs.y/rhs)
-    }
-    public static func /=(lhs: inout Point, rhs: Double) {
-        lhs.x /= rhs
-        lhs.y /= rhs
-    }
-    
-    static prefix func -(point: Point) -> Point {
-        return Point(-point.x, -point.y)
+    public var vy: Double {
+        get { y }
+        set(vy) { y = vy }
     }
 }
