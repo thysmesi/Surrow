@@ -14,6 +14,9 @@ public struct Vector: CustomStringConvertible, Hashable, Codable {
     public static var zero: Vector {
         Vector(0, 0)
     }
+    public static var unit: Vector {
+        Vector(1, 1)
+    }
     
     // MARK: - Indepenants
     public let id = UUID()
