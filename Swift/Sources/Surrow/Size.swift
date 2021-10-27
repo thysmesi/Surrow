@@ -69,13 +69,4 @@ public struct Size: CustomStringConvertible, Hashable, Codable {
         self.width = try container.decode(Double.self, forKey: .width)
         self.height = try container.decode(Double.self, forKey: .height)
     }
-    // ----- v2D ----- //
-    public var vx: Double {
-        get { width }
-        set(vx) { width = vx }
-    }
-    public var vy: Double {
-        get { height }
-        set(vy) { height = vy }
-    }
 }
