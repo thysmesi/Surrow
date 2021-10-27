@@ -130,6 +130,13 @@ public struct Vector: CustomStringConvertible, Hashable, Codable {
         lhs.dx -= rhs.dx
         lhs.dy -= rhs.dy
     }
+    public static func -(lhs: Vector, rhs: Size) -> Vector {
+        Vector(lhs.dx-rhs.width, lhs.dy-rhs.height)
+    }
+    public static func -=(lhs: inout Vector, rhs: Size) {
+        lhs.dx -= rhs.width
+        lhs.dy -= rhs.height
+    }
     public static func -(lhs: Vector, rhs: Double) -> Vector {
         Vector(lhs.dx-rhs, lhs.dy-rhs)
     }
