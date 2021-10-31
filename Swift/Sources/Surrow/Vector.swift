@@ -29,7 +29,7 @@ public struct Vector: CustomStringConvertible, Hashable, Codable {
     public var size: Size { Size(dx, dy) }
     
     public var length: Double {
-        abs(sqrt(pow(dx,2)+pow(dy,2)))
+        Swift.abs(sqrt(pow(dx,2)+pow(dy,2)))
     }
     public var degrees: Double {
         atan2(dy, dx) / (Double.pi / 180)
@@ -43,6 +43,9 @@ public struct Vector: CustomStringConvertible, Hashable, Codable {
     }
     public var perpendicular: Vector {
         Vector(dy, -dx)
+    }
+    public var abs: Vector {
+        Vector(Swift.abs(dx), Swift.abs(dy))
     }
     
     
