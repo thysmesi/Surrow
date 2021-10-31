@@ -25,6 +25,7 @@ public struct Point: CustomStringConvertible, Hashable, Codable {
     // MARK: - Dependants
     public var vector: Vector { Vector(x, y) }
     public var size: Size { Size(x, y) }
+    public var simd2: SIMD2<Float> { SIMD2<Float>(Float(x), Float(y)) }
     
     
     // MARK: - Adjustments

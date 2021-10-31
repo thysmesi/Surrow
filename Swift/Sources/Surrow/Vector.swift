@@ -27,6 +27,7 @@ public struct Vector: CustomStringConvertible, Hashable, Codable {
     // MARK: - Dependants
     public var point: Point { Point(dx, dy) }
     public var size: Size { Size(dx, dy) }
+    public var simd2: SIMD2<Float> { SIMD2<Float>(Float(dx), Float(dy)) }
     
     public var length: Double {
         Swift.abs(sqrt(pow(dx,2)+pow(dy,2)))

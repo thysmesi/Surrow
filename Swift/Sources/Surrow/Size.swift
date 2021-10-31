@@ -27,6 +27,7 @@ public struct Size: CustomStringConvertible, Hashable, Codable {
     // MARK: - Dependants
     public var point: Point { Point(width, height) }
     public var vector: Vector { Vector(width, height) }
+    public var simd2: SIMD2<Float> { SIMD2<Float>(Float(width), Float(height)) }
     public var min: Double { Swift.min(width, height) }
     public var max: Double { Swift.max(width, height) }
     
