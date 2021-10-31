@@ -41,6 +41,10 @@ public struct Size: CustomStringConvertible, Hashable, Codable {
         self.width = width
         self.height = height
     }
+    public init(_ value: Double) {
+        self.width = value
+        self.height = value
+    }
     public init(_ size: Size) {
         self.width = size.width
         self.height = size.height
