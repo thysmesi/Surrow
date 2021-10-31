@@ -25,10 +25,10 @@ public class Box: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Dependants
-    public var left: Double { position.x }
-    public var right: Double { position.x + size.width }
-    public var top: Double { position.y }
-    public var bottom: Double { position.y + size.height}
+    public var left: Double { position.x - size.half.width }
+    public var right: Double { position.x + size.half.width }
+    public var top: Double { position.y - size.half.height }
+    public var bottom: Double { position.y + size.half.height}
     
     public var polygon: Polygon {
         if _polygon == nil {
