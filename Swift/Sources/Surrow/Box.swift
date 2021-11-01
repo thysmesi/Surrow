@@ -25,10 +25,10 @@ public class Box: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Dependants
-    public var left: Double { position.x }
-    public var right: Double { position.x + size.width }
-    public var top: Double { position.y }
-    public var bottom: Double { position.y + size.height}
+    public var left: Double { position.x - size.half.width }
+    public var right: Double { position.x + size.half.width }
+    public var top: Double { position.y - size.half.height }
+    public var bottom: Double { position.y + size.half.height}
     
     public var polygon: Polygon {
         if _polygon == nil {
@@ -48,6 +48,33 @@ public class Box: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Testing
+    public func collides(with circle: Circle) -> Vector? {
+        if let collision = circle.collides(with: self) {
+            return -collision
+        }
+        return nil
+    }
+    public func collides(with other: Box) -> Vector? {
+        let delta = other.position.delta(to: position)
+        let halfs = size/2 + other.size/2
+        if (abs(delta.dx) < halfs.width && abs(delta.dy) < halfs.height) {
+            let o = halfs - delta
+            if o.width > o.height {
+                if delta.dy > 0 {
+                    return Vector(0, o.height)
+                } else {
+                    return Vector(0, -o.height)
+                }
+            } else {
+                if delta.dx > 0 {
+                    return Vector(o.width, 0)
+                } else {
+                    return Vector(-o.width, 0)
+                }
+            }
+        }
+        return nil
+    }
     
     
     // MARK: - Initializers

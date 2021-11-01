@@ -31,6 +31,31 @@ public class Circle: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Testing
+    public func collides(with other: Circle) -> Vector? {
+        let delta = other.position.delta(to: position)
+        let sum = radius + other.radius
+        let length = delta.length
+        if length < sum {
+            return delta.normal * (sum - length)
+        }
+        return nil
+    }
+    public func collides(with box: Box) -> Vector? {
+        let delta = position.delta(to: box.position)
+        let halfs = box.size/2
+        
+        var output: Vector? = nil
+        if abs(delta.dx) < halfs.width {
+            output = Vector(0, halfs.width - delta.dx)
+        }
+        if abs(delta.dy) < halfs.height {
+            let current = Vector(halfs.height - delta.dy, 0)
+            if output == nil || output!.length > current.length {
+                output = current
+            }
+        }
+        return output
+    }
     
     
     // MARK: - Initializers
