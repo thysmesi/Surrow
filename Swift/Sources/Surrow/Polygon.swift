@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import LibTessSwift
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
@@ -121,29 +122,49 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     
     public var triangles: [Polygon] {
         if _triangles == nil {
-            var triangles: [Polygon] = []
-            var left = vertices.map { Vertex($0) }
-            for index in left.indices {
-                left[index].last = left[index == 0 ? left.count-1 : index-1]
-                left[index].next = left[index == left.count-1 ? 0 : index+1]
+            let points = points
+
+            let polySize = 3
+
+            let contour = points.map {
+                CVector3(x: TESSreal($0.x), y: TESSreal($0.y), z: 0.0)
             }
 
-            while left.count > 3 {
-                for index in left.indices {
-                    let vertex = left[index]
-                    if vertex.tip {
-                        triangles.append(Polygon(points: [vertex.last.position, vertex.position, vertex.next.position]))
-                        vertex.last.next = vertex.next
-                        vertex.next.last = vertex.last
-                        left.remove(at: index)
-                        let removed = left.removeFirst()
-                        left.append(removed)
-                        break
+            let tess = TessC()!
+        
+            tess.addContour(contour)
+
+            try! tess.tessellate(windingRule: .evenOdd, elementType: .polygons, polySize: polySize)
+
+            var result: [Point] = []
+            var indices: [Int] = []
+                        
+            for vertex in tess.vertices! {
+                result.append(Point(Double(vertex.x), Double(vertex.y)))
+            }
+            
+            for i in 0..<tess.elementCount
+            {
+                for j in 0..<polySize
+                {
+                    let index = tess.elements![i * polySize + j]
+                    if (index == -1) {
+                        continue
                     }
+                    indices.append(index)
                 }
             }
-            triangles.append(Polygon(points: [left[0].position, left[1].position, left[2].position]))
-            _triangles = triangles
+
+            _triangles = []
+            for indicesIndex in indices.indices {
+                if indicesIndex % 3 == 3 {
+                    _triangles!.append(Polygon(points: [
+                        result[indices[indicesIndex]],
+                        result[indices[indicesIndex+1]],
+                        result[indices[indicesIndex+2]],
+                    ]))
+                }
+            }
         }
         return _triangles!
     }
