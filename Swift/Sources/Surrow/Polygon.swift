@@ -157,7 +157,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
 
             _triangles = []
             for indicesIndex in indices.indices {
-                if indicesIndex % 3 == 3 {
+                if indicesIndex % 3 == 0 {
                     _triangles!.append(Polygon(points: [
                         result[indices[indicesIndex]],
                         result[indices[indicesIndex+1]],
