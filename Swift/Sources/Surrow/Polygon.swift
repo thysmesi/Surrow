@@ -215,7 +215,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Testing
-    func intercects(_ other: Polygon) -> [Point] {
+    public func intercects(_ other: Polygon) -> [Point] {
         var intercects: [Point] = []
         for segment1 in sides {
             for segment2 in other.sides {
