@@ -43,6 +43,12 @@ public struct Point: CustomStringConvertible, Hashable, Codable {
 
         return point
     }
+    public func cross(_ other: Point) -> Double {
+        x * other.y - y * other.x
+    }
+    public func dot(_ other: Point) -> Double {
+        x * other.x + y * other.y
+    }
 
     
     // MARK: - Testing
