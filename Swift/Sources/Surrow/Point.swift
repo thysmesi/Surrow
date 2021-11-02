@@ -107,14 +107,18 @@ public struct Point: CustomStringConvertible, Hashable, Codable {
         return false
     }
     
+    private func rd(_ value: Double) -> Double {
+        floor(value * 1000) / 1000.0
+    }
+    private func ru(_ value: Double) -> Double {
+        ceil(value * 1000) / 1000.0
+    }
     public func fluffy(on segment: Segment) -> Bool{
-        func ru(_ value: Double) -> Double {
-            ceil(value * 1000) / 1000.0
-        }
-        func rd(_ value: Double) -> Double {
-            floor(value * 1000) / 1000.0
-        }
-        return x >= rd(segment.min.dx) && x <= ru(segment.max.dx) && y >= rd(segment.min.dy) && y <= ru(segment.max.dy)
+        x >= rd(segment.min.dx) && x <= ru(segment.max.dx) && y >= rd(segment.min.dy) && y <= ru(segment.max.dy)
+    }
+    
+    public func fluffy(equals point: Point) -> Bool {
+        rd(x) == rd(point.x) && rd(y) == rd(point.y)
     }
     
     
