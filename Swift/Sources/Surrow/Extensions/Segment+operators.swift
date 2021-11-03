@@ -16,4 +16,7 @@ extension Segment {
     public static func +(lhs: Segment, rhs: Vector) -> Segment {
         Segment(p1: lhs.p1+rhs, p2: lhs.p2+rhs)
     }
+    public static func -(lhs: Segment, rhs: Vector) -> Segment {
+        Segment(p1: lhs.p1-rhs, p2: lhs.p2-rhs)
+    }
 }
