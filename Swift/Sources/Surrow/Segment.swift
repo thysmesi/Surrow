@@ -21,6 +21,8 @@ public class Segment: Line {
     
     public var max: Vector { Vector(Swift.max(p1.x, p2.x), Swift.max(p1.y, p2.y)) }
     public var min: Vector { Vector(Swift.min(p1.x, p2.x), Swift.min(p1.y, p2.y)) }
+    public var mid: Point {(p1 + p2) / 2}
+    public var bounding: Box { Box(position: mid, size: (max-min).size) }
     
     // MARK: - Adjustments
     
