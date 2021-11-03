@@ -31,6 +31,17 @@ public class Circle: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Testing
+    public func collides(with segment: Segment) -> Vector? {
+        let closest = position.closest(on: segment)
+
+        let vector = position.delta(to: closest)
+        if vector.length < radius {
+            let normal = vector.normal
+            let difference = radius - vector.length
+            return -normal * difference
+        }
+        return nil
+    }
     public func collides(with other: Circle) -> Vector? {
         let delta = other.position.delta(to: position)
         let sum = radius + other.radius
