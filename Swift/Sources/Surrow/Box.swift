@@ -75,6 +75,9 @@ public class Box: CustomStringConvertible, Hashable, Codable {
         }
         return nil
     }
+    public func touching(_ other: Box) -> Bool {
+        left < other.right && right > other.left && top > other.bottom && bottom < other.top
+    }
     
     
     // MARK: - Initializers
