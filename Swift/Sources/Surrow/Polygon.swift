@@ -104,193 +104,193 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Dependants
-    public var vertices: [Vertex] {
-        var vertices: [Vertex] = []
-        for point in points {
-            vertices.append(Vertex(position: point))
-        }
-        for index in vertices.indices {
-            vertices[index].last = vertices[index == 0 ? vertices.count-1 : index-1]
-            vertices[index].next = vertices[index == vertices.count-1 ? 0 : index+1]
-        }
-        return vertices
-    }
-    public var triangles: [Polygon] {
-        let points = points
-
-        let polySize = 3
-
-        let contour = points.map {
-            CVector3(x: TESSreal($0.x), y: TESSreal($0.y), z: 0.0)
-        }
-
-        let tess = TessC()!
-
-        tess.addContour(contour)
-
-        try! tess.tessellate(windingRule: .evenOdd, elementType: .polygons, polySize: polySize)
-
-        var result: [Point] = []
-        var indices: [Int] = []
-
-        for vertex in tess.vertices! {
-            result.append(Point(Double(vertex.x), Double(vertex.y)))
-        }
-
-        for i in 0..<tess.elementCount
-        {
-            for j in 0..<polySize
-            {
-                let index = tess.elements![i * polySize + j]
-                if (index == -1) {
-                    continue
-                }
-                indices.append(index)
-            }
-        }
-
-        var triangles: [Polygon] = []
-        for indicesIndex in indices.indices {
-            if indicesIndex % 3 == 0 {
-                triangles.append(Polygon(points: [
-                    result[indices[indicesIndex]],
-                    result[indices[indicesIndex+1]],
-                    result[indices[indicesIndex+2]],
-                ]))
-            }
-        }
-        return triangles
-    }
-    public var sides: [Segment] {
-        var segments: [Segment] = []
-        for vertex in vertices {
-            segments.append(Segment(p1: vertex.position, p2: vertex.next.position))
-        }
-        return segments
-    }
-    public var center: Point {
-        var sum = Point.origin
-        for point in points {
-            sum += point
-        }
-        return sum / Double(points.count)
-    }
-    public var bounding: Box {
-        var min = points[0]
-        var max = points[0]
-        for point in points {
-            min.x = Swift.min(min.x, point.x)
-            max.x = Swift.max(max.x, point.x)
-            min.y = Swift.min(min.y, point.y)
-            max.y = Swift.max(max.y, point.y)
-        }
-        return Box(position: min, size: (max - min).size)
-    }
 //    public var vertices: [Vertex] {
-//        if _vertices == nil {
-//            var vertices: [Vertex] = []
-//            for point in points {
-//                vertices.append(Vertex(position: point))
-//            }
-//            for index in vertices.indices {
-//                vertices[index].last = vertices[index == 0 ? vertices.count-1 : index-1]
-//                vertices[index].next = vertices[index == vertices.count-1 ? 0 : index+1]
-//            }
-//            _vertices = vertices
+//        var vertices: [Vertex] = []
+//        for point in points {
+//            vertices.append(Vertex(position: point))
 //        }
-//        return _vertices!
+//        for index in vertices.indices {
+//            vertices[index].last = vertices[index == 0 ? vertices.count-1 : index-1]
+//            vertices[index].next = vertices[index == vertices.count-1 ? 0 : index+1]
+//        }
+//        return vertices
 //    }
-//    private var _vertices: [Vertex]? = nil
-//
 //    public var triangles: [Polygon] {
-//        if _triangles == nil {
-//            let points = points
+//        let points = points
 //
-//            let polySize = 3
+//        let polySize = 3
 //
-//            let contour = points.map {
-//                CVector3(x: TESSreal($0.x), y: TESSreal($0.y), z: 0.0)
-//            }
+//        let contour = points.map {
+//            CVector3(x: TESSreal($0.x), y: TESSreal($0.y), z: 0.0)
+//        }
 //
-//            let tess = TessC()!
+//        let tess = TessC()!
 //
-//            tess.addContour(contour)
+//        tess.addContour(contour)
 //
-//            try! tess.tessellate(windingRule: .evenOdd, elementType: .polygons, polySize: polySize)
+//        try! tess.tessellate(windingRule: .evenOdd, elementType: .polygons, polySize: polySize)
 //
-//            var result: [Point] = []
-//            var indices: [Int] = []
+//        var result: [Point] = []
+//        var indices: [Int] = []
 //
-//            for vertex in tess.vertices! {
-//                result.append(Point(Double(vertex.x), Double(vertex.y)))
-//            }
+//        for vertex in tess.vertices! {
+//            result.append(Point(Double(vertex.x), Double(vertex.y)))
+//        }
 //
-//            for i in 0..<tess.elementCount
+//        for i in 0..<tess.elementCount
+//        {
+//            for j in 0..<polySize
 //            {
-//                for j in 0..<polySize
-//                {
-//                    let index = tess.elements![i * polySize + j]
-//                    if (index == -1) {
-//                        continue
-//                    }
-//                    indices.append(index)
+//                let index = tess.elements![i * polySize + j]
+//                if (index == -1) {
+//                    continue
 //                }
-//            }
-//
-//            _triangles = []
-//            for indicesIndex in indices.indices {
-//                if indicesIndex % 3 == 0 {
-//                    _triangles!.append(Polygon(points: [
-//                        result[indices[indicesIndex]],
-//                        result[indices[indicesIndex+1]],
-//                        result[indices[indicesIndex+2]],
-//                    ]))
-//                }
+//                indices.append(index)
 //            }
 //        }
-//        return _triangles!
-//    }
-//    private var _triangles: [Polygon]?
 //
+//        var triangles: [Polygon] = []
+//        for indicesIndex in indices.indices {
+//            if indicesIndex % 3 == 0 {
+//                triangles.append(Polygon(points: [
+//                    result[indices[indicesIndex]],
+//                    result[indices[indicesIndex+1]],
+//                    result[indices[indicesIndex+2]],
+//                ]))
+//            }
+//        }
+//        return triangles
+//    }
 //    public var sides: [Segment] {
-//        if _sides == nil {
-//            var segments: [Segment] = []
-//            for vertex in vertices {
-//                segments.append(Segment(p1: vertex.position, p2: vertex.next.position))
-//            }
-//            _sides = segments
+//        var segments: [Segment] = []
+//        for vertex in vertices {
+//            segments.append(Segment(p1: vertex.position, p2: vertex.next.position))
 //        }
-//        return _sides!
+//        return segments
 //    }
-//    private var _sides: [Segment]? = nil
-//
 //    public var center: Point {
-//        if _center == nil {
-//            var sum = Point.origin
-//            for point in points {
-//                sum += point
-//            }
-//            _center = sum / Double(points.count)
+//        var sum = Point.origin
+//        for point in points {
+//            sum += point
 //        }
-//        return _center!
+//        return sum / Double(points.count)
 //    }
-//    private var _center: Point? = nil
-//
 //    public var bounding: Box {
-//        if _bounding == nil {
-//            var min = points[0]
-//            var max = points[0]
-//            for point in points {
-//                min.x = Swift.min(min.x, point.x)
-//                max.x = Swift.max(max.x, point.x)
-//                min.y = Swift.min(min.y, point.y)
-//                max.y = Swift.max(max.y, point.y)
-//            }
-//            _bounding = Box(position: min, size: (max - min).size)
+//        var min = points[0]
+//        var max = points[0]
+//        for point in points {
+//            min.x = Swift.min(min.x, point.x)
+//            max.x = Swift.max(max.x, point.x)
+//            min.y = Swift.min(min.y, point.y)
+//            max.y = Swift.max(max.y, point.y)
 //        }
-//        return _bounding!
+//        return Box(position: min, size: (max - min).size)
 //    }
-//    private var _bounding: Box? = nil
+    public var vertices: [Vertex] {
+        if _vertices == nil {
+            var vertices: [Vertex] = []
+            for point in points {
+                vertices.append(Vertex(position: point))
+            }
+            for index in vertices.indices {
+                vertices[index].last = vertices[index == 0 ? vertices.count-1 : index-1]
+                vertices[index].next = vertices[index == vertices.count-1 ? 0 : index+1]
+            }
+            _vertices = vertices
+        }
+        return _vertices!
+    }
+    private var _vertices: [Vertex]? = nil
+
+    public var triangles: [Polygon] {
+        if _triangles == nil {
+            let points = points
+
+            let polySize = 3
+
+            let contour = points.map {
+                CVector3(x: TESSreal($0.x), y: TESSreal($0.y), z: 0.0)
+            }
+
+            let tess = TessC()!
+
+            tess.addContour(contour)
+
+            try! tess.tessellate(windingRule: .evenOdd, elementType: .polygons, polySize: polySize)
+
+            var result: [Point] = []
+            var indices: [Int] = []
+
+            for vertex in tess.vertices! {
+                result.append(Point(Double(vertex.x), Double(vertex.y)))
+            }
+
+            for i in 0..<tess.elementCount
+            {
+                for j in 0..<polySize
+                {
+                    let index = tess.elements![i * polySize + j]
+                    if (index == -1) {
+                        continue
+                    }
+                    indices.append(index)
+                }
+            }
+
+            _triangles = []
+            for indicesIndex in indices.indices {
+                if indicesIndex % 3 == 0 {
+                    _triangles!.append(Polygon(points: [
+                        result[indices[indicesIndex]],
+                        result[indices[indicesIndex+1]],
+                        result[indices[indicesIndex+2]],
+                    ]))
+                }
+            }
+        }
+        return _triangles!
+    }
+    private var _triangles: [Polygon]?
+
+    public var sides: [Segment] {
+        if _sides == nil {
+            var segments: [Segment] = []
+            for vertex in vertices {
+                segments.append(Segment(p1: vertex.position, p2: vertex.next.position))
+            }
+            _sides = segments
+        }
+        return _sides!
+    }
+    private var _sides: [Segment]? = nil
+
+    public var center: Point {
+        if _center == nil {
+            var sum = Point.origin
+            for point in points {
+                sum += point
+            }
+            _center = sum / Double(points.count)
+        }
+        return _center!
+    }
+    private var _center: Point? = nil
+
+    public var bounding: Box {
+        if _bounding == nil {
+            var min = points[0]
+            var max = points[0]
+            for point in points {
+                min.x = Swift.min(min.x, point.x)
+                max.x = Swift.max(max.x, point.x)
+                min.y = Swift.min(min.y, point.y)
+                max.y = Swift.max(max.y, point.y)
+            }
+            _bounding = Box(position: min, size: (max - min).size)
+        }
+        return _bounding!
+    }
+    private var _bounding: Box? = nil
     
     
     // MARK: - Adjustments
@@ -313,19 +313,19 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     // MARK: - Initializers
     public init(points: [Point]) {
         self.points = points
-//        createObserver()
+        createObserver()
     }
     public init(_ polygon: Polygon) {
         self.points = polygon.points
-//        createObserver()
+        createObserver()
     }
-//    private func createObserver(){
-//        _ = $points
-//            .sink() { [self] _ in
-//                _vertices = nil
-//                _triangles = nil
-//            }
-//    }
+    private func createObserver(){
+        _ = $points
+            .sink() { [self] _ in
+                _vertices = nil
+                _triangles = nil
+            }
+    }
     
     
     // MARK: - Conformance
