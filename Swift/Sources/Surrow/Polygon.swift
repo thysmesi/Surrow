@@ -286,7 +286,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
                 min.y = Swift.min(min.y, point.y)
                 max.y = Swift.max(max.y, point.y)
             }
-            _bounding = Box(position: min, size: (max - min).size)
+            _bounding = Box(position: (min + max) / 2, size: (max - min).size)
         }
         return _bounding!
     }
