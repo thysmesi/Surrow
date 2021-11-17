@@ -25,6 +25,9 @@ public class Circle: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Dependants
+    var diameter: Double {
+        radius*2
+    }
     
     
     // MARK: - Adjustments
