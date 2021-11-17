@@ -10,6 +10,7 @@ import Foundation
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
 extension Size {
+    
     // ----- Point ----- //
     public static func +(lhs: Size, rhs: Point) -> Size {
         Size(lhs.width+rhs.x, lhs.height+rhs.y)

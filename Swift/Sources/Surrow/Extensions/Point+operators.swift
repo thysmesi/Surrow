@@ -10,6 +10,7 @@ import Foundation
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
 extension Point {
+    
     // ----- Point ----- //
     public static func +(lhs: Point, rhs: Point) -> Point {
         Point(lhs.x+rhs.x, lhs.y+rhs.y)
@@ -39,7 +40,7 @@ extension Point {
         lhs.x /= rhs.x
         lhs.y /= rhs.y
     }
-    static prefix func -(point: Point) -> Point {
+    static prefix func -(_ point: Point) -> Point {
         return Point(-point.x, -point.y)
     }
 

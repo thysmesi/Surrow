@@ -10,6 +10,7 @@ import Foundation
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
 extension Vector {
+    
     // ----- Point ----- //
     public static func +(lhs: Vector, rhs: Point) -> Vector {
         Vector(lhs.dx+rhs.x, lhs.dy+rhs.y)
@@ -70,7 +71,7 @@ extension Vector {
         lhs.dy /= rhs.dy
     }
     
-    static prefix func -(vector: Vector) -> Vector {
+    static prefix func - (_ vector: Vector) -> Vector {
         return Vector(-vector.dx, -vector.dy)
     }
 
