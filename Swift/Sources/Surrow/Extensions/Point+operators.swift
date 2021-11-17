@@ -40,7 +40,7 @@ extension Point {
         lhs.x /= rhs.x
         lhs.y /= rhs.y
     }
-    static prefix func -(_ point: Point) -> Point {
+    public static prefix func -(_ point: Point) -> Point {
         return Point(-point.x, -point.y)
     }
 

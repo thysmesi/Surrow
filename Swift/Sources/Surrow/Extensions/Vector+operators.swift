@@ -70,8 +70,7 @@ extension Vector {
         lhs.dx /= rhs.dx
         lhs.dy /= rhs.dy
     }
-    
-    static prefix func - (_ vector: Vector) -> Vector {
+    public static prefix func - (_ vector: Vector) -> Vector {
         return Vector(-vector.dx, -vector.dy)
     }
 
