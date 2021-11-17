@@ -55,20 +55,20 @@ public class Circle: CustomStringConvertible, Hashable, Codable {
         return nil
     }
     public func collides(with box: Box) -> Vector? {
-        let delta = position.delta(to: box.position)
-        let halfs = box.size/2
-        
-        var output: Vector? = nil
-        if abs(delta.dx) < halfs.width {
-            output = Vector(0, halfs.width - delta.dx)
+        let closestX = max(box.left,min(box.right,position.x))
+        let closestY = max(box.top,min(box.bottom,position.y))
+
+        let distanceX = position.x - closestX;
+        let distanceY = position.y - closestY;
+
+        let distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
+        if distanceSquared < (radius * radius) {
+            let closest = Point(closestX, closestY)
+            let delta = position.delta(to: closest)
+            return -delta.normal * (radius - delta.length)
         }
-        if abs(delta.dy) < halfs.height {
-            let current = Vector(halfs.height - delta.dy, 0)
-            if output == nil || output!.length > current.length {
-                output = current
-            }
-        }
-        return output
+
+        return nil
     }
     
     
