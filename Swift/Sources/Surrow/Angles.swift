@@ -20,4 +20,9 @@ public extension Double {
     var degreesSimplified: Double {
         (self.truncatingRemainder(dividingBy: 360) + 360).truncatingRemainder(dividingBy: 360)
     }
+    
+    func degreesDelta(to degrees: Double) -> Double{
+        let diff = ( degrees - self + 180 ).truncatingRemainder(dividingBy: 360) - 180
+        return diff < -180 ? diff + 360 : diff;
+    }
 }
