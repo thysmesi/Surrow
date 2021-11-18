@@ -1,4 +1,5 @@
 import Foundation
+import LibTessSwift
 
 public class Polygon: CustomStringConvertible, Hashable, Codable {
     
@@ -103,41 +104,47 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     /// A list of triangles that make up the polygon useful for for rendering
     var triangles: [Polygon] {
         if _triangles == nil {
-            _triangles = []
-            
-            var choping: [Polygon.Vertex] = []
-            
-            for vertex in vertices {
-                choping.append(Polygon.Vertex(position: vertex.position))
-            }
-            for index in choping.indices {
-                choping[index].last = choping[index == 0 ? choping.count - 1 : index - 1]
-                choping[index].next = choping[index == choping.count - 1 ? 0 : index + 1]
-            }
-            
-            var tick = 0
-            func chop(index: Int) {
-                tick += 1
-                let vertex = choping[index]
-                if  (orientation == .clockwise && vertex.cross > 0) ||
-                    (orientation == .counterClockwise && vertex.cross < 0) {
-                    if choping.count == 3 {
-                        _triangles.append(Polygon(points: [choping[0].position,choping[1].position,choping[2].position]))
-                    } else {
-                        _triangles.append(Polygon(points: [vertex.last.position,vertex.position,vertex.next.position]))
+            let polySize = 3
 
-                        vertex.last.next = vertex.next
-                        vertex.next.last = vertex.last
-                        choping.remove(at: index)
-                        chop(index: index >= choping.count - 1 ? 0 : index + 1)
+            let contour = points.map {
+                CVector3(x: Float($0.x), y: Float($0.y), z: 0.0)
+            }
+    
+            let tess = TessC()!
+    
+            tess.addContour(contour)
+    
+            try! tess.tessellate(windingRule: .evenOdd, elementType: .polygons, polySize: polySize)
+    
+            var result: [Point] = []
+            var indices: [Int] = []
+    
+            for vertex in tess.vertices! {
+                result.append(Point(Double(vertex.x), Double(vertex.y)))
+            }
+    
+            for i in 0..<tess.elementCount
+            {
+                for j in 0..<polySize
+                {
+                    let index = tess.elements![i * polySize + j]
+                    if (index == -1) {
+                        continue
                     }
-                } else {
-                    if choping.count > 3 {
-                        chop(index: index == choping.count - 1 ? 0 : index + 1)
-                    }
+                    indices.append(index)
                 }
             }
-            chop(index: 0)
+    
+            _triangles  = []
+            for indicesIndex in indices.indices {
+                if indicesIndex % 3 == 0 {
+                    _triangles.append(Polygon(points: [
+                        result[indices[indicesIndex]],
+                        result[indices[indicesIndex+1]],
+                        result[indices[indicesIndex+2]],
+                    ]))
+                }
+            }
         }
         return _triangles
     }

@@ -26,6 +26,7 @@
 		621125DA2746164F00FDB505 /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125CB2746164F00FDB505 /* Polygon.swift */; };
 		621125DB2746164F00FDB505 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125CC2746164F00FDB505 /* Circle.swift */; };
 		621125DE2746221200FDB505 /* SwiftUI+Surrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125DD2746221200FDB505 /* SwiftUI+Surrow.swift */; };
+		6286352C2746CC6900E60F9B /* LibTessSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6286352B2746CC6900E60F9B /* LibTessSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6286352C2746CC6900E60F9B /* LibTessSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,6 +154,9 @@
 			dependencies = (
 			);
 			name = SurrowPolygonTesting;
+			packageProductDependencies = (
+				6286352B2746CC6900E60F9B /* LibTessSwift */,
+			);
 			productName = SurrowPolygonTesting;
 			productReference = 621125AB2746163100FDB505 /* SurrowPolygonTesting.app */;
 			productType = "com.apple.product-type.application";
@@ -180,6 +185,9 @@
 				Base,
 			);
 			mainGroup = 621125A22746163100FDB505;
+			packageReferences = (
+				6286352A2746CC6900E60F9B /* XCRemoteSwiftPackageReference "LibTessSwift" */,
+			);
 			productRefGroup = 621125AC2746163100FDB505 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -423,6 +431,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6286352A2746CC6900E60F9B /* XCRemoteSwiftPackageReference "LibTessSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LuizZak/LibTessSwift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6286352B2746CC6900E60F9B /* LibTessSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6286352A2746CC6900E60F9B /* XCRemoteSwiftPackageReference "LibTessSwift" */;
+			productName = LibTessSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 621125A32746163100FDB505 /* Project object */;
 }
