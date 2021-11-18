@@ -49,6 +49,13 @@ public struct Point: CustomStringConvertible, Hashable, Codable {
     public func dot(_ other: Point) -> Double {
         x * other.x + y * other.y
     }
+    
+    public func cross(_ other: Vector) -> Double {
+        x * other.dy - y * other.dx
+    }
+    public func dot(_ other: Vector) -> Double {
+        x * other.dx + y * other.dy
+    }
 
     
     // MARK: - Testing
