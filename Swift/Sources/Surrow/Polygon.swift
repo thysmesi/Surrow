@@ -294,7 +294,13 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Adjustments
-    
+    public func rotated(degrees: Double) -> Polygon {
+        var rotated: [Point] = []
+        for point in points {
+            rotated.append(point.rotated(around: center, degrees: degrees))
+        }
+        return Polygon(points: rotated)
+    }
     
     // MARK: - Testing
     public func intercects(_ other: Polygon) -> [Point] {
