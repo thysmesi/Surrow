@@ -211,6 +211,57 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     }
     
     
+    // MARK: - Testing
+    // ----- Seperating Axis Theorem ----- //
+    private func flatten(points: [Point], on axis: Vector) -> ClosedRange<Double> {
+        var min = Double.greatestFiniteMagnitude
+        var max = -Double.greatestFiniteMagnitude
+        
+        for point in points {
+            let dot = point.dot(axis)
+            min = Swift.min(min, dot)
+            max = Swift.max(max, dot)
+        }
+        return min...max
+    }
+    private func isSeperating(axis: Vector, seperating points1: [Point], and points2: [Point]) -> Double? {
+        let range1 = flatten(points: points1, on: axis)
+        let range2 = flatten(points: points2, on: axis)
+        
+        if !range1.overlaps(range2) {
+            return nil
+        }
+        
+        let option1 = range1.upperBound - range2.lowerBound
+        let option2 = range2.upperBound - range1.lowerBound
+        return option1 < option2 ? option1 : -option2
+    }
+    private func testConvexConvex(_ first: Polygon, _ second: Polygon) -> Vector? {
+        var smallest: Vector? = nil
+        
+        for axis in first.pne + second.pne {
+            if let overlap = isSeperating(axis: axis, seperating: first.points, and: second.points) {
+                let vector = (axis * overlap)
+                if smallest == nil || smallest!.length > abs(overlap) {
+                    smallest = vector
+                }
+            } else {
+                return nil
+            }
+        }
+        
+        return smallest
+    }
+    
+    // ----- Colliding ----- //
+    public func collides(with other: Polygon) -> Vector? {
+        if convex && other.convex {
+            return testConvexConvex(self, other)
+        }
+        return nil
+    }
+
+    
     // MARK: - Statics
     class Vertex {
         
@@ -303,25 +354,56 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     public static func +(lhs: Polygon, rhs: Vector) -> Polygon {
         Polygon(points: lhs.points.map { $0 + rhs } )
     }
+    public static func +=(lhs: inout Polygon, rhs: Vector) {
+        lhs.points = lhs.points.map { $0 + rhs }
+    }
+    
     public static func -(lhs: Polygon, rhs: Vector) -> Polygon {
         Polygon(points: lhs.points.map { $0 - rhs } )
     }
+    public static func -=(lhs: inout Polygon, rhs: Vector) {
+        lhs.points = lhs.points.map { $0 - rhs }
+    }
+    
     public static func *(lhs: Polygon, rhs: Vector) -> Polygon {
         Polygon(points: lhs.points.map { $0 * rhs } )
     }
+    public static func *=(lhs: inout Polygon, rhs: Vector) {
+        lhs.points = lhs.points.map { $0 * rhs }
+    }
+    
     public static func /(lhs: Polygon, rhs: Vector) -> Polygon {
         Polygon(points: lhs.points.map { $0 / rhs } )
     }
+    public static func /=(lhs: inout Polygon, rhs: Vector) {
+        lhs.points = lhs.points.map { $0 / rhs }
+    }
+    
     public static func +(lhs: Polygon, rhs: Double) -> Polygon {
         Polygon(points: lhs.points.map { $0 + rhs } )
     }
+    public static func +=(lhs: inout Polygon, rhs: Double) {
+        lhs.points = lhs.points.map { $0 + rhs }
+    }
+
     public static func -(lhs: Polygon, rhs: Double) -> Polygon {
         Polygon(points: lhs.points.map { $0 - rhs } )
     }
+    public static func -=(lhs: inout Polygon, rhs: Double) {
+        lhs.points = lhs.points.map { $0 - rhs }
+    }
+
     public static func *(lhs: Polygon, rhs: Double) -> Polygon {
         Polygon(points: lhs.points.map { $0 * rhs } )
     }
+    public static func *=(lhs: inout Polygon, rhs: Double) {
+        lhs.points = lhs.points.map { $0 * rhs }
+    }
+
     public static func /(lhs: Polygon, rhs: Double) -> Polygon {
         Polygon(points: lhs.points.map { $0 / rhs } )
+    }
+    public static func /=(lhs: inout Polygon, rhs: Double) {
+        lhs.points = lhs.points.map { $0 / rhs }
     }
 }
