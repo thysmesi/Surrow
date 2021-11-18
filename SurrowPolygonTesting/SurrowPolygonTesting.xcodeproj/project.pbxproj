@@ -1,0 +1,428 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		621125AF2746163100FDB505 /* SurrowPolygonTestingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125AE2746163100FDB505 /* SurrowPolygonTestingApp.swift */; };
+		621125B12746163100FDB505 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125B02746163100FDB505 /* ContentView.swift */; };
+		621125B32746163200FDB505 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 621125B22746163200FDB505 /* Assets.xcassets */; };
+		621125B62746163200FDB505 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 621125B52746163200FDB505 /* Preview Assets.xcassets */; };
+		621125CD2746164F00FDB505 /* Angles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125BD2746164F00FDB505 /* Angles.swift */; };
+		621125CE2746164F00FDB505 /* Segment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125BE2746164F00FDB505 /* Segment.swift */; };
+		621125D02746164F00FDB505 /* Point+operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125C12746164F00FDB505 /* Point+operators.swift */; };
+		621125D12746164F00FDB505 /* Size+operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125C22746164F00FDB505 /* Size+operators.swift */; };
+		621125D22746164F00FDB505 /* Segment+operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125C32746164F00FDB505 /* Segment+operators.swift */; };
+		621125D32746164F00FDB505 /* CoreGraphicsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125C42746164F00FDB505 /* CoreGraphicsExtensions.swift */; };
+		621125D42746164F00FDB505 /* Vector+operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125C52746164F00FDB505 /* Vector+operators.swift */; };
+		621125D52746164F00FDB505 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125C62746164F00FDB505 /* Size.swift */; };
+		621125D62746164F00FDB505 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125C72746164F00FDB505 /* Box.swift */; };
+		621125D72746164F00FDB505 /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125C82746164F00FDB505 /* Point.swift */; };
+		621125D82746164F00FDB505 /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125C92746164F00FDB505 /* Vector.swift */; };
+		621125D92746164F00FDB505 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125CA2746164F00FDB505 /* Line.swift */; };
+		621125DA2746164F00FDB505 /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125CB2746164F00FDB505 /* Polygon.swift */; };
+		621125DB2746164F00FDB505 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125CC2746164F00FDB505 /* Circle.swift */; };
+		621125DE2746221200FDB505 /* SwiftUI+Surrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621125DD2746221200FDB505 /* SwiftUI+Surrow.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		621125AB2746163100FDB505 /* SurrowPolygonTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SurrowPolygonTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		621125AE2746163100FDB505 /* SurrowPolygonTestingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurrowPolygonTestingApp.swift; sourceTree = "<group>"; };
+		621125B02746163100FDB505 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		621125B22746163200FDB505 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		621125B52746163200FDB505 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		621125BD2746164F00FDB505 /* Angles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Angles.swift; sourceTree = "<group>"; };
+		621125BE2746164F00FDB505 /* Segment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segment.swift; sourceTree = "<group>"; };
+		621125C12746164F00FDB505 /* Point+operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Point+operators.swift"; sourceTree = "<group>"; };
+		621125C22746164F00FDB505 /* Size+operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Size+operators.swift"; sourceTree = "<group>"; };
+		621125C32746164F00FDB505 /* Segment+operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Segment+operators.swift"; sourceTree = "<group>"; };
+		621125C42746164F00FDB505 /* CoreGraphicsExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreGraphicsExtensions.swift; sourceTree = "<group>"; };
+		621125C52746164F00FDB505 /* Vector+operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Vector+operators.swift"; sourceTree = "<group>"; };
+		621125C62746164F00FDB505 /* Size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
+		621125C72746164F00FDB505 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		621125C82746164F00FDB505 /* Point.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
+		621125C92746164F00FDB505 /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
+		621125CA2746164F00FDB505 /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
+		621125CB2746164F00FDB505 /* Polygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
+		621125CC2746164F00FDB505 /* Circle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
+		621125DD2746221200FDB505 /* SwiftUI+Surrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Surrow.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		621125A82746163100FDB505 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		621125A22746163100FDB505 = {
+			isa = PBXGroup;
+			children = (
+				621125AD2746163100FDB505 /* SurrowPolygonTesting */,
+				621125AC2746163100FDB505 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		621125AC2746163100FDB505 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				621125AB2746163100FDB505 /* SurrowPolygonTesting.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		621125AD2746163100FDB505 /* SurrowPolygonTesting */ = {
+			isa = PBXGroup;
+			children = (
+				621125BC2746164F00FDB505 /* Surrow */,
+				621125AE2746163100FDB505 /* SurrowPolygonTestingApp.swift */,
+				621125B02746163100FDB505 /* ContentView.swift */,
+				621125B22746163200FDB505 /* Assets.xcassets */,
+				621125B42746163200FDB505 /* Preview Content */,
+			);
+			path = SurrowPolygonTesting;
+			sourceTree = "<group>";
+		};
+		621125B42746163200FDB505 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				621125B52746163200FDB505 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		621125BC2746164F00FDB505 /* Surrow */ = {
+			isa = PBXGroup;
+			children = (
+				621125BF2746164F00FDB505 /* Extensions */,
+				621125BD2746164F00FDB505 /* Angles.swift */,
+				621125BE2746164F00FDB505 /* Segment.swift */,
+				621125C62746164F00FDB505 /* Size.swift */,
+				621125C72746164F00FDB505 /* Box.swift */,
+				621125C82746164F00FDB505 /* Point.swift */,
+				621125C92746164F00FDB505 /* Vector.swift */,
+				621125CA2746164F00FDB505 /* Line.swift */,
+				621125CB2746164F00FDB505 /* Polygon.swift */,
+				621125CC2746164F00FDB505 /* Circle.swift */,
+			);
+			path = Surrow;
+			sourceTree = "<group>";
+		};
+		621125BF2746164F00FDB505 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				621125DC274621FF00FDB505 /* Drawing */,
+				621125C12746164F00FDB505 /* Point+operators.swift */,
+				621125C22746164F00FDB505 /* Size+operators.swift */,
+				621125C32746164F00FDB505 /* Segment+operators.swift */,
+				621125C42746164F00FDB505 /* CoreGraphicsExtensions.swift */,
+				621125C52746164F00FDB505 /* Vector+operators.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		621125DC274621FF00FDB505 /* Drawing */ = {
+			isa = PBXGroup;
+			children = (
+				621125DD2746221200FDB505 /* SwiftUI+Surrow.swift */,
+			);
+			path = Drawing;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		621125AA2746163100FDB505 /* SurrowPolygonTesting */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 621125B92746163200FDB505 /* Build configuration list for PBXNativeTarget "SurrowPolygonTesting" */;
+			buildPhases = (
+				621125A72746163100FDB505 /* Sources */,
+				621125A82746163100FDB505 /* Frameworks */,
+				621125A92746163100FDB505 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SurrowPolygonTesting;
+			productName = SurrowPolygonTesting;
+			productReference = 621125AB2746163100FDB505 /* SurrowPolygonTesting.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		621125A32746163100FDB505 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1310;
+				LastUpgradeCheck = 1310;
+				TargetAttributes = {
+					621125AA2746163100FDB505 = {
+						CreatedOnToolsVersion = 13.1;
+					};
+				};
+			};
+			buildConfigurationList = 621125A62746163100FDB505 /* Build configuration list for PBXProject "SurrowPolygonTesting" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 621125A22746163100FDB505;
+			productRefGroup = 621125AC2746163100FDB505 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				621125AA2746163100FDB505 /* SurrowPolygonTesting */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		621125A92746163100FDB505 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				621125B62746163200FDB505 /* Preview Assets.xcassets in Resources */,
+				621125B32746163200FDB505 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		621125A72746163100FDB505 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				621125DB2746164F00FDB505 /* Circle.swift in Sources */,
+				621125DA2746164F00FDB505 /* Polygon.swift in Sources */,
+				621125D52746164F00FDB505 /* Size.swift in Sources */,
+				621125D12746164F00FDB505 /* Size+operators.swift in Sources */,
+				621125D42746164F00FDB505 /* Vector+operators.swift in Sources */,
+				621125DE2746221200FDB505 /* SwiftUI+Surrow.swift in Sources */,
+				621125D72746164F00FDB505 /* Point.swift in Sources */,
+				621125CD2746164F00FDB505 /* Angles.swift in Sources */,
+				621125B12746163100FDB505 /* ContentView.swift in Sources */,
+				621125AF2746163100FDB505 /* SurrowPolygonTestingApp.swift in Sources */,
+				621125D02746164F00FDB505 /* Point+operators.swift in Sources */,
+				621125D92746164F00FDB505 /* Line.swift in Sources */,
+				621125CE2746164F00FDB505 /* Segment.swift in Sources */,
+				621125D82746164F00FDB505 /* Vector.swift in Sources */,
+				621125D62746164F00FDB505 /* Box.swift in Sources */,
+				621125D22746164F00FDB505 /* Segment+operators.swift in Sources */,
+				621125D32746164F00FDB505 /* CoreGraphicsExtensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		621125B72746163200FDB505 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		621125B82746163200FDB505 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		621125BA2746163200FDB505 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"SurrowPolygonTesting/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.dixietech.cbigler9699.SurrowPolygonTesting;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		621125BB2746163200FDB505 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"SurrowPolygonTesting/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.dixietech.cbigler9699.SurrowPolygonTesting;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		621125A62746163100FDB505 /* Build configuration list for PBXProject "SurrowPolygonTesting" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				621125B72746163200FDB505 /* Debug */,
+				621125B82746163200FDB505 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		621125B92746163200FDB505 /* Build configuration list for PBXNativeTarget "SurrowPolygonTesting" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				621125BA2746163200FDB505 /* Debug */,
+				621125BB2746163200FDB505 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 621125A32746163100FDB505 /* Project object */;
+}
