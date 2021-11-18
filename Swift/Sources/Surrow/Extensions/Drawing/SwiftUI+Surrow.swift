@@ -9,7 +9,7 @@ import SwiftUI
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-func PolygonPath(polygon: Polygon) -> Path {
+public func PolygonPath(polygon: Polygon) -> Path {
     Path { path in
         path.move(to: polygon.vertices[0].position)
         for vertex in polygon.vertices {
@@ -20,7 +20,7 @@ func PolygonPath(polygon: Polygon) -> Path {
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-extension View {
+public extension View {
     func position(point: Point) -> some View {
         self.position(x: point.x, y: point.y)
     }
@@ -31,7 +31,7 @@ extension View {
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-extension Point {
+public extension Point {
     init(_ cg: CGPoint) {
         self.x = cg.x
         self.y = cg.y
@@ -40,7 +40,7 @@ extension Point {
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-extension CGPoint {
+public extension CGPoint {
     init(_ point: Point) {
         self.init(x: point.x, y: point.y)
     }
@@ -48,7 +48,7 @@ extension CGPoint {
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-extension CGVector {
+public extension CGVector {
     init(_ vector: Vector) {
         self.init(dx: vector.dx, dy: vector.dy)
     }
@@ -56,7 +56,7 @@ extension CGVector {
 
 @available(iOS 13.0, *)
 @available(macOS 10.15, *)
-extension Path {
+public extension Path {
     mutating func move(to point: Point) {
         move(to: CGPoint(point))
     }
