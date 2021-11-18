@@ -16,11 +16,19 @@ func PolygonPath(polygon: Polygon) -> Path {
     }
 }
 
+extension View {
+    func position(point: Point) -> some View {
+        self.position(x: point.x, y: point.y)
+    }
+    func frame(size: Size) -> some View {
+        self.frame(width: size.width, height: size.height)
+    }
+}
+
 extension Point {
     init(_ cg: CGPoint) {
         self.x = cg.x
         self.y = cg.y
-//        self.init(cg.x, cg.y)
     }
 }
 
@@ -44,10 +52,3 @@ extension Path {
         addLine(to: CGPoint(point))
     }
 }
-
-extension View {
-    func position(_ point: Point) -> some View {
-        position(x: point.x, y: point.y)
-    }
-}
-

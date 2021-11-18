@@ -36,6 +36,10 @@ class ViewModel: ObservableObject {
         Point(0,100)
     ].map {$0 + Vector(200, 250)})
     
+    let circle = Circle(position: Point(UIScreen.main.bounds.width/2, 10), radius: 50)
+    let box = Box(position: Size(UIScreen.main.bounds.size).point / 2, size: Size(175, 80))
+    var rotation = 0.0
+    
     var ears: [Polygon] = []
     
     init() {
@@ -57,12 +61,13 @@ class ViewModel: ObservableObject {
 //        print(CFAbsoluteTimeGetCurrent() - start)
 
         RunLoop.main.add(Timer(timeInterval: 1/60, repeats: true, block: { [self] _ in
-            polygon2 += Vector(0,3)
-
-            if let vector = polygon.collides(with: polygon2) {
-                polygon2 += vector
+            circle.position += Vector(0,3)
+            rotation += 0.75
+            
+            if let vector = circle.collides(with: box, degrees: rotation) {
+                circle.position += vector
             }
-
+            
             objectWillChange.send()
         }), forMode: .common)
     }
@@ -74,29 +79,37 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geometry in
             Color.black
-            PolygonPath(polygon: viewModel.polygon)
+            SwiftUI.Circle()
                 .stroke(.white, lineWidth: 2)
-            PolygonPath(polygon: viewModel.polygon2)
+                .frame(size: viewModel.circle.size)
+                .position(point: viewModel.circle.position)
+            
+            PolygonPath(polygon: viewModel.box.polygon.rotated(degrees: viewModel.rotation))
                 .stroke(.white, lineWidth: 2)
-
-            Path { path in
-                for ear in viewModel.ears {
-                    path.move(to: ear.vertices[0].position)
-                    for vertex in ear.vertices {
-                        path.addLine(to: vertex.next.position)
-                    }
-                }
-            }
-            .fill(.blue.opacity(0.25))
-            Path { path in
-                for ear in viewModel.ears {
-                    path.move(to: ear.vertices[0].position)
-                    for vertex in ear.vertices {
-                        path.addLine(to: vertex.next.position)
-                    }
-                }
-            }
-            .stroke(.white)
+            
+//            PolygonPath(polygon: viewModel.polygon)
+//                .stroke(.white, lineWidth: 2)
+//            PolygonPath(polygon: viewModel.polygon2)
+//                .stroke(.white, lineWidth: 2)
+//
+//            Path { path in
+//                for ear in viewModel.ears {
+//                    path.move(to: ear.vertices[0].position)
+//                    for vertex in ear.vertices {
+//                        path.addLine(to: vertex.next.position)
+//                    }
+//                }
+//            }
+//            .fill(.blue.opacity(0.25))
+//            Path { path in
+//                for ear in viewModel.ears {
+//                    path.move(to: ear.vertices[0].position)
+//                    for vertex in ear.vertices {
+//                        path.addLine(to: vertex.next.position)
+//                    }
+//                }
+//            }
+//            .stroke(.white)
 
         }
         .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global).onEnded { value in

@@ -28,6 +28,9 @@ public class Circle: CustomStringConvertible, Hashable, Codable {
     public var diameter: Double {
         radius*2
     }
+    public var size: Size {
+        Size(diameter)
+    }
     
     
     // MARK: - Adjustments
@@ -68,6 +71,14 @@ public class Circle: CustomStringConvertible, Hashable, Codable {
             return -delta.normal * (radius - delta.length)
         }
 
+        return nil
+    }
+    public func collides(with box: Box, degrees: Double) -> Vector? {
+        let projected = Circle(position: position.rotated(around: box.position, degrees: -degrees), radius: radius)
+        
+        if let vector = projected.collides(with: box) {
+            return vector.rotated(degrees: degrees)
+        }
         return nil
     }
     

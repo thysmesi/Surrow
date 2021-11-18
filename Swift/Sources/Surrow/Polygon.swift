@@ -262,6 +262,12 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     }
 
     
+    // MARK: - Adjustments
+    public func rotated(degrees: Double) -> Polygon {
+        Polygon(points: points.map { $0.rotated(around: center, degrees: degrees) } )
+    }
+    
+    
     // MARK: - Statics
     class Vertex {
         
