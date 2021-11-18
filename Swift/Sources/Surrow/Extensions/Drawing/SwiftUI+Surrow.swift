@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
 func PolygonPath(polygon: Polygon) -> Path {
     Path { path in
         path.move(to: polygon.vertices[0].position)
@@ -16,6 +18,8 @@ func PolygonPath(polygon: Polygon) -> Path {
     }
 }
 
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
 extension View {
     func position(point: Point) -> some View {
         self.position(x: point.x, y: point.y)
@@ -25,6 +29,8 @@ extension View {
     }
 }
 
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
 extension Point {
     init(_ cg: CGPoint) {
         self.x = cg.x
@@ -32,18 +38,24 @@ extension Point {
     }
 }
 
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
 extension CGPoint {
     init(_ point: Point) {
         self.init(x: point.x, y: point.y)
     }
 }
 
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
 extension CGVector {
     init(_ vector: Vector) {
         self.init(dx: vector.dx, dy: vector.dy)
     }
 }
 
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
 extension Path {
     mutating func move(to point: Point) {
         move(to: CGPoint(point))

@@ -1,10 +1,12 @@
 import Foundation
 
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
 public class Polygon: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Independents
-    var points: [Point] = [] {
+    public var points: [Point] = [] {
         didSet {
             _vertices = nil
             _sides = nil
@@ -21,7 +23,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     
     // MARK: - Dependents
     /// A two way ordered linked list of vertices
-    var vertices: [Vertex] {
+    public var vertices: [Vertex] {
         if _vertices == nil {
             _vertices = []
             for point in points {
@@ -37,7 +39,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     private var _vertices: [Vertex]! = nil
     
     /// A list of sides as segments
-    var sides: [Segment] {
+    public var sides: [Segment] {
         if _sides == nil {
             _sides = []
             for index in points.indices {
@@ -49,7 +51,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     private var _sides: [Segment]! = nil
     
     /// A list of the sides as vectors
-    var edges: [Vector] {
+    public var edges: [Vector] {
         if _edges == nil {
             _edges = []
             for index in points.indices {
@@ -70,7 +72,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     private var _pne: [Vector]! = nil
     
     /// The polygons center point
-    var center: Point {
+    public var center: Point {
         if _center == nil {
             var sum = Point.origin
             for point in points {
@@ -83,7 +85,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     private var _center: Point! = nil
     
     /// A bounding box
-    var bounding: Box {
+    public var bounding: Box {
         if _bounding == nil {
             var min = points[0]
             var max = points[0]
@@ -101,7 +103,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     private var _bounding: Box! = nil
     
     /// A list of triangles that make up the polygon useful for for rendering
-    var triangles: [Polygon] {
+    public var triangles: [Polygon] {
         if _triangles == nil {
             _triangles = []
             
@@ -144,7 +146,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     private var _triangles: [Polygon]! = nil
     
     /// Tells whether the list of points is in a clockwise or counterclockwise orientation
-    var orientation: Orientation {
+    public var orientation: Orientation {
         if _orientation == nil {
             var sum = 0.0
             for vertex in vertices {
@@ -161,7 +163,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     private var _orientation: Orientation! = nil
     
     /// returns whether the polygon is convex or not
-    var convex: Bool {
+    public var convex: Bool {
         if _convex == nil {
             var convex = true
             let positive = vertices[0].cross > 0
@@ -178,26 +180,26 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     private var _convex: Bool! = nil
     
     /// returns whether the polygon is concave or not
-    var concave: Bool {
+    public var concave: Bool {
         !convex
     }
     
     /// Returns whether this polygon is a triangle or not
-    var triangle: Bool {
+    public var triangle: Bool {
         points.count == 3
     }
     
     /// Returns whether this polygon is a rectangle or not
-    var rectangle: Bool {
+    public var rectangle: Bool {
         points.count == 4
     }
     
     
     // MARK: - Initializers
-    init(points: [Point]) {
+    public init(points: [Point]) {
         self.points = points
     }
-    init(_ polygon: Polygon) {
+    public init(_ polygon: Polygon) {
         self.points = polygon.points
         _vertices = polygon._vertices
         _sides = polygon._sides
@@ -269,7 +271,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
     
     
     // MARK: - Statics
-    class Vertex {
+    public class Vertex {
         
         
         // MARK: - Vertex.Independents
@@ -325,7 +327,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
         }
     }
     
-    enum Orientation {
+    public enum Orientation {
         case clockwise
         case counterClockwise
     }
