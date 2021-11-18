@@ -12,12 +12,12 @@ let package = Package(
             targets: ["Surrow"]),
     ],
     dependencies: [
-//        .package(name: "LibTessSwift", url: "https://github.com/LuizZak/LibTessSwift.git", branch: "master")
+        .package(name: "LibTessSwift", url: "https://github.com/LuizZak/LibTessSwift.git", branch: "master")
     ],
     targets: [
         .target(
             name: "Surrow",
-            dependencies: [],
+            dependencies: ["LibTessSwift"],
             path: "Swift/Sources/Surrow")
     ]
 )
