@@ -57,7 +57,10 @@ public struct Vector: CustomStringConvertible, Hashable, Codable {
     public func dot(_ other: Vector) -> Double {
         dx * other.dx + dy * other.dy
     }
-    
+    public func rotated(degrees: Double) -> Vector {
+        let radians = degrees.toRadians
+        return Vector(dx * cos(radians) - dy * sin(radians), dx * sin(radians) + dy * cos(radians))
+    }
     
     // MARK: - Testing
     
