@@ -275,14 +275,14 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
         
         
         // MARK: - Vertex.Independents
-        let position: Point
-        var next: Vertex! {
+        public let position: Point
+        public var next: Vertex! {
             didSet {
                 _second = nil
                 _cross = nil
             }
         }
-        var last: Vertex! {
+        public var last: Vertex! {
             didSet {
                 _first = nil
                 _cross = nil
@@ -292,7 +292,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
         
         // MARK: - Vertex.Dependents
         /// Vector that goes from last position to current position
-        var first: Vector {
+        public var first: Vector {
             if _first == nil {
                _first = last.position.delta(to: position)
             }
@@ -301,7 +301,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
         private var _first: Vector! = nil
         
         /// Vector that goes from current position to the next position
-        var second: Vector {
+        public var second: Vector {
             if _second == nil {
                 _second = position.delta(to: next.position)
             }
@@ -310,7 +310,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
         private var _second: Vector! = nil
 
         /// cross prodect of the first and second vectors
-        var cross: Double {
+        public var cross: Double {
             if _cross == nil {
                 _cross = first.cross(second)
             }
@@ -320,7 +320,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
 
         
         // MARK: - Vertex.Initializers
-        init(position: Point, next: Vertex? = nil, last: Vertex? = nil){
+        public init(position: Point, next: Vertex? = nil, last: Vertex? = nil){
             self.position = position
             self.next = next
             self.last = last
