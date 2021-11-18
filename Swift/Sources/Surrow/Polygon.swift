@@ -308,6 +308,22 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
             return _second
         }
         private var _second: Vector! = nil
+        
+        public var interior: Double {
+            if _interior == nil {
+                _interior = (position.delta(to: last.position).perpendicular.normal + next.position.delta(to: position).perpendicular.normal).normal.degrees.degreesSimplified
+            }
+            return _interior
+        }
+        private var _interior: Double! = nil
+        
+        public var exterior: Double {
+            if _exterior == nil {
+                _exterior = (last.position.delta(to: position).perpendicular.normal + position.delta(to: next.position).perpendicular.normal).normal.degrees.degreesSimplified
+            }
+            return _exterior
+        }
+        private var _exterior: Double! = nil
 
         /// cross prodect of the first and second vectors
         public var cross: Double {
