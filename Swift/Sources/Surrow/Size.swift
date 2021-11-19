@@ -40,12 +40,12 @@ public struct Size: CustomStringConvertible, Hashable, Codable {
     
     // MARK: - Initializers
     public init(_ width: Double, _ height: Double) {
-        self.width = width
-        self.height = height
+        self.width = abs(width)
+        self.height = abs(height)
     }
     public init(_ value: Double) {
-        self.width = value
-        self.height = value
+        self.width = abs(value)
+        self.height = abs(value)
     }
     public init(_ size: Size) {
         self.width = size.width
