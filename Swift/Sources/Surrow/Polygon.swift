@@ -274,7 +274,7 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
         var touching = false
         for side in sides {
             for otherSide in other.sides {
-                if side.touchinog(otherSide) {
+                if side.touching(otherSide) {
                     touching = true
                     break
                 }
