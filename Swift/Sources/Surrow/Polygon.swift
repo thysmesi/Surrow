@@ -274,13 +274,14 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
         var touching = false
         for side in sides {
             for otherSide in other.sides {
-                if side.touching(otherSide) {
+                if side.touchinog(otherSide) {
                     touching = true
                     break
                 }
             }
         }
-        return touching
+    
+        return bounding.touching(other.bounding) ? touching : false
     }
     
     // MARK: - Adjustments
