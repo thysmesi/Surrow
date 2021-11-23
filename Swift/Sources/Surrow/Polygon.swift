@@ -270,6 +270,18 @@ public class Polygon: CustomStringConvertible, Hashable, Codable {
         return nil
     }
 
+    public func touching(_ other: Polygon) -> Bool {
+        var touching = false
+        for side in sides {
+            for otherSide in other.sides {
+                if side.touching(otherSide) {
+                    touching = true
+                    break
+                }
+            }
+        }
+        return touching
+    }
     
     // MARK: - Adjustments
     public func rotated(degrees: Double) -> Polygon {

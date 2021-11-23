@@ -41,7 +41,9 @@ public class Segment: Line {
     public override func intercects(_ polygon: Polygon) -> [Point] {
         line.intercects(polygon).filter {$0.fluffy(on: self)}
     }
-    
+    public func touching(_ other: Segment) -> Bool {
+        intercects(other) != nil
+    }
     
     
     // MARK: - Initializers
